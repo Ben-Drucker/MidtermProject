@@ -1,0 +1,29 @@
+---
+title: 'Sampling Distributions'
+author: Ben Drucker
+bibliography: bib.bib
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    code_folding: show
+    css: stat21-lab-theme.css
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(tidymodels)
+library(patchwork)
+theme_set(theme_minimal(base_family = "Lora"))
+```
+
+# Introduction and Motivation
+
+Intro from @veaux2012stats
+
+# Bibliography
+
+https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html

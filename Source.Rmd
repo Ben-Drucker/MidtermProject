@@ -1,0 +1,141 @@
+---
+title: 'Lab04: ANOVA'
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    code_folding: show
+    css: stat21-lab-theme.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(tidymodels)
+library(patchwork)
+theme_set(theme_minimal(base_family = "Lora"))
+```
+
+*Note:* This lab is drawn from *Stat2* by Cannon et. al. 
+
+# Introduction and Motivation
+
+# Bibliography
+
+
+# Data Overview 
+
+In the 1970's doctors wondered if giving terminal cancer patients a supplment of ascorbate would prolong their lives. They designed an experiment to compare cancer patients who received ascorbate to cancer patients who did not receive the supplement. The result of that experiment was that, in fact, ascorbate did seem to prolong the lives of these patients. But then a second question arose. Was the effect of the ascorbate different when different organs were affected by the cancer? The researchers took a second look at the data. This time they concentrated only on those patients who received teh ascorbate and divided the data up by which organ was affected by the cancer. They had five different organs represented among the patients (all of whom only had one organ affected): Stomach, bronchus, colon, ovary, and breast. In this case, since the patients were not randomly assigned to which type of cancer they had, but were instead a random sample of those who had such cancers, we are dealing with an observational study. So let's analyze the data! 
+
+Recall that the model for ANOVA is:
+
+$$ Y_i = \mu + \alpha_k + \epsilon_i $$
+where $\mu$ is the overall mean, $\alpha_k$ is the group effect for group $k$, and $\epsilon_i$ is the residual/error/noise term. 
+
+In this case, the model is: 
+
+$$ \text{Survival Time} = \text{Grand Mean} + \text{Organ Effect} + \text{Error Term} $$
+
+```{r}
+cancer_survival = read_tsv("http://www.stat2.org/datasets/CancerSurvival.txt")
+head(cancer_survival)
+```
+
+**Q1:** Perform an appropriate EDA. What do you think the result of the ANOVA test will be? 
+
+# Fitting the ANOVA model
+
+**Q2:** Write out the null and alternative hypotheses. 
+
+**Q4:** Use R to perform an ANOVA test and find the test statistic. What is the test statistic? 
+
+**Q5:** Check assumptions. 
+
+Your residual plots should look like the following. If you get something different, make sure you have your X and Y variables in the right order and that you are plotting the correct variables. (You will be asked to do this on your homework, so ask for help now if you need it!) Which assumptions appear to be violated? How can you tell?
+
+```{r, fig.height=3, fig.width=8, echo = FALSE}
+cancer_aov = aov(Survival ~ Organ, data = cancer_survival) 
+
+resid_scatter = ggplot(augment(cancer_aov), aes(x = .fitted, y = .resid))+
+  geom_point()
+
+resid_hist = ggplot(augment(cancer_aov), aes(x = .resid))+
+  geom_histogram(bins = 15, col = "white")
+
+resid_qq = ggplot(augment(cancer_aov), aes(sample = .std.resid))+
+  geom_qq()
+
+resid_scatter + resid_hist + resid_qq
+```
+
+# Transforming the y-variable
+
+Luckily for us, we know we can *transform* our outcome variable to try to fix violations in our residual plots. When we see increasing variance in the residuals, we can often (but not always) fix it with a log transformation. This is one example of a *variance stabilizing transformation*.
+
+**Q6**: Fit the following model. 
+
+$$\text{log(Survival Time)} = \text{Grand Mean} + \text{Organ Effect} + \text{Error Term} $$
+
+if you need to, you can show the code to check your answer. 
+
+```{r, eval = FALSE, class.source = 'fold-hide'}
+cancer_aov_log = aov(log(Survival) ~ Organ, data = cancer_survival)
+```
+
+**Q7**: Check your assumptions. Your residual plots should look like the following: 
+
+```{r, fig.height=3, fig.width=8, echo = FALSE}
+cancer_aov_log = aov(log(Survival) ~ Organ, data = cancer_survival) 
+
+resid_scatter = ggplot(augment(cancer_aov_log), aes(x = .fitted, y = .std.resid))+
+  geom_point()
+
+resid_hist = ggplot(augment(cancer_aov_log), aes(x = .std.resid))+
+  geom_histogram(bins = 15, col = "white")
+
+resid_qq = ggplot(augment(cancer_aov_log), aes(sample = .std.resid))+
+  geom_qq()
+
+resid_scatter + resid_hist + resid_qq
+```
+
+They look much better! There's maybe a little problem with the left tail, but it's not too extreme so we'll proceed. 
+
+**Q8:** What do you conclude? 
+
+**Q9:** Perform a *pairwise t-test* to determine which of the pairs of groups have statistically significant differences. Make sure to use a multiple testing correction and use the transformed y-variable. If you click the "code" button, you can see which groups have statistically significant differences to check your answer.
+
+```{r, include = FALSE}
+pairwise.t.test(x = log(cancer_survival$Survival), g = cancer_survival$Organ, 
+                                p.adjust.method = "bonferroni") %>%
+  tidy()
+```
+
+```{r, eval = FALSE, class.source = 'fold-hide'}
+Bronchus and Breast
+Stomach and Breast
+```
+
+**Q10:** *Challenge Question:* Make a visualization showing the predictions for each group. If you have time, try comparing that to predictions from the non-transformed log model. Here's one example: 
+
+```{r, echo = FALSE, fig.width=8, fig.height=3}
+p1 = ggplot(augment(cancer_aov_log), aes(x = Organ, y = exp(.fitted))) + 
+  geom_point() +
+  ylim(100, 2000) +
+  labs(
+    title = "Log-transformed Model",
+    x = "Organ",
+    y = "Predicted Survival (Days)"
+  )
+p2 = ggplot(augment(cancer_aov), aes(x = Organ, y = .fitted)) + 
+  geom_point() +
+  ylim(100, 2000) +
+  labs(
+    title = "Original Model",
+    x = "Organ",
+    y = "Predicted Survival (Days)"
+  )
+
+p1 + p2
+```
+
