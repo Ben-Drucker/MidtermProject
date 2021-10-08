@@ -2,6 +2,7 @@
 title: 'Sampling Distributions'
 author: Ben Drucker
 bibliography: bib.bib
+csl: NumberedFormat.csl
 output:
   html_document:
     toc: yes
@@ -10,6 +11,9 @@ output:
     css: stat21-lab-theme.css
   pdf_document:
     toc: yes
+nocite: |
+  @veaux2012stats
+
 ---
 
 ```{r setup, include=FALSE}
@@ -17,13 +21,22 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(tidyverse)
 library(tidymodels)
 library(patchwork)
+library(dials)
 theme_set(theme_minimal(base_family = "Lora"))
 ```
 
-# Introduction and Motivation
+## Introduction and Motivation
 
-Intro from @veaux2012stats
+Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of stay-at-home fathers is 50% (i.e., is there an even gender split in stay-at-home parents[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from [this](https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/) Pew study (@barroso_fry_2021).)
 
-# Bibliography
+For these types of questions, it would be completely impractical to survey every household. However, it *is* practical (and common) to survey a limited subset (**sample**) of the population in question. Obviously, it is unlikely for the answer to our question to be found *exactly*, using a sample—after all, we are not surveying the whole population! But what does it take to get an answer that is "close enough" to the exact answer? How many people do we need to survey? What assumptions about our data need to be met to accept our "close enough answer" as truly being "close enough?"
+
+Read on to learn!
+
+## Sampling distributions for 
+
+[^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
+
+## References
 
 https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html
