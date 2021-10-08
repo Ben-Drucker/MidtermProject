@@ -1,8 +1,0 @@
-@Book{veaux2012stats,
- author = {Veaux, Richard},
- title = {Stats : data and models},
- publisher = {Addison-Wesley},
- year = {2012},
- address = {Boston},
- isbn = {978-0321692559}
-}
