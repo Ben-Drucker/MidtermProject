@@ -22,12 +22,13 @@ library(tidyverse)
 library(tidymodels)
 library(patchwork)
 library(dials)
+library(ggplot2)
 theme_set(theme_minimal(base_family = "Lora"))
 ```
 
 ### Introduction and Motivation
 
-Many txmes, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of stay-at-home fathers is 50% (i.e., is there an even gender split in stay-at-home parents[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from [this](https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/) Pew study (@barroso_fry_2021).)
+Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of stay-at-home fathers is 50% (i.e., is there an even gender split in stay-at-home parents[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from [this](https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/) Pew study (@barroso_fry_2021).)
 
 For these types of questions, it would be completely impractical to survey every household. However, it *is* practical (and common) to survey a limited subset (**sample**) of the population in question. Obviously, it is unlikely for the answer to our question to be found *exactly*, using a sample—after all, we are not surveying the whole population! But what does it take to get an answer that is "close enough" to the exact answer? How many people do we need to survey? What assumptions about our data need to be met to accept our "close enough answer" as truly being "close enough?"
 
@@ -37,17 +38,39 @@ Read on to learn!
 
 Let's begin a simple example: marbles in a jar. Suppose I have a jar filled with 500,000 blue marbles and 500,000 red marbles. Thus, there are one million marbles in total. However, suppose I don't tell you that and I task you with estimating the proportion of red marbles in the jar. It would be impractical to count all the marbles, so you decide to count a sample of them and use that as the estimate. (This is analogous to the example about stay-at-home parents earlier!)
 
-**Q1** Write r code to simulate a few random samples of selections from the jar with samples of size 3, 10, 100, 10,000, and 50,000. *Hint: The R function `sample(x, size)` takes in a vector `x` of options, and an integer `size` of sample size. You can create a vector using the notation c(elt_1, elt_2)*. Make sure to run each of these sample at least ten times. What do you observe about the observations as the sample size increases?
+**Q1** The code below simulates selections from the jar with samples of size 3, 10, 100, and 1,000. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?
 
-```{r}
-for(sample_size in c(3, 10, 100, 10000, 50000)){ # For each of the prescribed sample sizes...
-  print(rbinom(10, sample_size, 0.5)/sample_size)
+```{r echo = FALSE}
+library(ggplot2)
+library(tidyverse)
+library(patchwork)
+marbles <- c()
+
+for (i in 1:10000) {
+  marbles <- append(marbles, "red")
 }
+
+for (i in 1:10000) {
+  marbles <- append(marbles, "blue")
+}
+
+size3 <- tibble(sample(marbles, 3))
+size10 <- tibble(sample(marbles, 10))
+size100 <- tibble(sample(marbles, 100))
+size1000 <- tibble(sample(marbles, 1000))
+
+
+ggplot(size3) +
+  geom_bar(mapping = aes(x = sample(marbles, 3))) +
+ggplot(size10) +
+   geom_bar(mapping = aes(x = sample(marbles, 10))) +
+ggplot(size100) +
+  geom_bar(mapping = aes(x = sample(marbles, 100))) +
+ggplot(size1000) +
+  geom_bar(mapping = aes(x = sample(marbles, 1000)))
 ```
 
 QQ TODO: Replacement??
-
-
 
 [^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
 
@@ -61,3 +84,4 @@ https://www.w3schools.com/r/r_for_loop.asp
 https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/append-->
 http://www.simonqueenborough.info/R/stats-advanced/sampling
 https://www.tutorialspoint.com/r/r_binomial_distribution.htm
+http://seankross.com/rbootcamp/simulation.html
