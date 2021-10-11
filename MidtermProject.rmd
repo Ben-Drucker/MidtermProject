@@ -97,10 +97,33 @@ ggplot(data_) +
 
 You should have observed that the distribution gets narrower and narrower as the sample size increases. This should intuitively make sense. As we increase sample size, it seems more likely that each sample is closer to the true proportion of blue marbles in the jar. 
 
-This type of histogram is called a **sampling distribution of proportions**. This is because it is the *distribution* of *samples* for which we are trying to gain information about a population *proportion*.
+This type of histogram is called a **sampling distribution of a proportion**. This is because it is the *distribution* of *samples* for which we are trying to gain information about a population *proportion*.
+
+The following fact about sampling distributions is possibly less obvious: as sample size increases—the *normal model* becomes a better and better model for the sampling distribution. This is due to the **Central Limit Theorem**, a pivotal result in statistics. The fact specifically applying to sampling distributions is just one part of the more general result proven by Pierre-Simon Laplace in 1810.
+
+Now that we know the sampling distribution follows a normal model[^cond], it is natural to ask about its center and spread. 
+
+#### **Q3**
+What do you think the center of the sampling distribution is? (As a challenge, you can also think about its standard deviation, but it is difficult to guess just by looking at a sampling distribution.) *Answer in the code chunk below.*
+
+```{r}
+  # As you can probably imagine,
+  # sampling distributions for proportions are centered at p,
+  # the true population proportion.
+  # This should intuitively make sense; with many random samples,
+  # we would expect the samples to average to the
+  # underlying population proportion.
+```
+
+As mentioned earlier, standard deviation is trickier. To determine this quantity, 
+
+
+
+<!--QQ: Sample distribution vs. sampling distribution: Which (if either) can mean a distribution of actual data? Which is just "all possible"?-->
 
 
 [^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
+[^cond]: (Under special conditions we will outline earlier)
 
 ### References
 
