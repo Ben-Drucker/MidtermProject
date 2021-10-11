@@ -23,7 +23,7 @@ library(tidymodels)
 library(patchwork)
 library(dials)
 library(ggplot2)
-theme_set(theme_minimal(base_family = "Lora"))
+theme_set(theme_minimal(base_family = "Georgia"))
 ```
 
 ### Introduction and Motivation
@@ -38,12 +38,10 @@ Read on to learn!
 
 Let's begin a simple example: marbles in a jar. Suppose I have a jar filled with 500,000 blue marbles and 500,000 red marbles. Thus, there are one million marbles in total. However, suppose I don't tell you that and I task you with estimating the proportion of red marbles in the jar. It would be impractical to count all the marbles, so you decide to count a sample of them and use that as the estimate. (This is analogous to the example about stay-at-home parents earlier!)
 
-**Q1** The code below simulates selections from the jar with samples of size 3, 10, 100, and 1,000. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?
+#### **Q1**
+The code below simulates selections from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?
 
-```{r echo = FALSE}
-library(ggplot2)
-library(tidyverse)
-library(patchwork)
+```{r}
 marbles <- c()
 
 for (i in 1:10000) {
@@ -54,23 +52,53 @@ for (i in 1:10000) {
   marbles <- append(marbles, "blue")
 }
 
-size3 <- tibble(sample(marbles, 3))
-size10 <- tibble(sample(marbles, 10))
-size100 <- tibble(sample(marbles, 100))
-size1000 <- tibble(sample(marbles, 1000))
+size3 <- tibble(marbles3 = sample(marbles, 3))
+size10 <- tibble(marbles10 = sample(marbles, 10))
+size100 <- tibble(marbles100 = sample(marbles, 100))
+size1000 <- tibble(marbles1000 = sample(marbles, 1000))
 
-
-ggplot(size3) +
-  geom_bar(mapping = aes(x = sample(marbles, 3))) +
+marble_plot = ggplot(size3) +
+  geom_bar(mapping = aes(x = marbles3)) +
 ggplot(size10) +
-   geom_bar(mapping = aes(x = sample(marbles, 10))) +
+  geom_bar(mapping = aes(x = marbles10)) +
 ggplot(size100) +
-  geom_bar(mapping = aes(x = sample(marbles, 100))) +
+  geom_bar(mapping = aes(x = marbles100)) +
 ggplot(size1000) +
-  geom_bar(mapping = aes(x = sample(marbles, 1000)))
+  geom_bar(mapping = aes(x = marbles1000))
+
+# UNCOMMENT TO SHOW RESULTING PLOT
+# marble_plot
 ```
 
-QQ TODO: Replacement??
+You should have found that as the sample size increases, the bar graphs are generally less variable (across different runs of the code) and closer to the true proportion of blue/red marbles in the jar.
+
+What if we were to rerun this sampling procedure many times (with a fixed sample size),counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram?  
+
+#### **Q2**
+The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe?
+
+```{r}
+v <- c()
+
+for (i in 1:1000) {
+  size10 <- tibble(marbles10 = sample(marbles, 1000))
+  filter(size10, marbles10 == "blue") %>%
+    summarise(num_blue = n()) %>%
+      select(num_blue) -> output
+  
+  v <- append(v, output[[1]]/1000)
+}
+
+data_ = tibble(count = v)
+
+ggplot(data_) +
+  geom_histogram(mapping = aes(x = count), binwidth = 2)
+```
+
+You should have observed that the distribution gets narrower and narrower as the sample size increases. This should intuitively make sense. As we increase sample size, it seems more likely that each sample is closer to the true proportion of blue marbles in the jar. 
+
+This type of histogram is called a **sampling distribution of proportions**. This is because it is the *distribution* of *samples* for which we are trying to gain information about a population *proportion*.
+
 
 [^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
 
