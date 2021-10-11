@@ -2,7 +2,7 @@
 title: 'Sampling Distributions'
 author: Ben Drucker
 bibliography: bib.bib
-csl: NumberedFormat.csl
+# csl: NumberedFormat.csl
 output:
   html_document:
     toc: yes
@@ -115,10 +115,16 @@ What do you think the center of the sampling distribution is? (As a challenge, y
   # underlying population proportion.
 ```
 
-As mentioned earlier, standard deviation is trickier. To determine this quantity, 
+As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model, which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (blue marbles). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
+
+$$\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{frac{np(1-p)}{n^2}} = \sqrt{frac{p(1-p)}{n}}.$$
+
+Similarly, the center of the binomial distribution is the true number of successes.<!--FIXME--> Thus, the center of the sampling distribution is the true number of successes divided by $n$, or $p$. 
+
+#### **Q4:** Calculate the mean and standard deviation for a sampling distribution with $p = 0.70$ and $n = 421$
 
 
-
+<!--TODO If time, go into detail about the SD of the binomial model-->
 <!--QQ: Sample distribution vs. sampling distribution: Which (if either) can mean a distribution of actual data? Which is just "all possible"?-->
 
 
