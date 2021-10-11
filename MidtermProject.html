@@ -283,16 +283,15 @@ div.tocify {
 
 <div id="introduction-and-motivation" class="section level3">
 <h3>Introduction and Motivation</h3>
-<p>Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of stay-at-home fathers is 50% (i.e., is there an even gender split in stay-at-home parents<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>)? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from <a href="https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/">this</a> Pew study (<span class="citation">Barroso and Fry (2021)</span>).)</p>
+<p>Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of stay-at-home fathers is 50% (i.e., is there an even gender split in stay-at-home parents<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>)? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from <a href="https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/">this</a> Pew study (<span class="citation">[1]</span>).)</p>
 <p>For these types of questions, it would be completely impractical to survey every household. However, it <em>is</em> practical (and common) to survey a limited subset (<strong>sample</strong>) of the population in question. Obviously, it is unlikely for the answer to our question to be found <em>exactly</em>, using a sample—after all, we are not surveying the whole population! But what does it take to get an answer that is “close enough” to the exact answer? How many people do we need to survey? What assumptions about our data need to be met to accept our “close enough answer” as truly being “close enough?”</p>
 <p>Read on to learn!</p>
 </div>
 <div id="sampling-distributions-for-proportions" class="section level3">
 <h3>Sampling distributions for Proportions</h3>
 <p>Let’s begin a simple example: marbles in a jar. Suppose I have a jar filled with 500,000 blue marbles and 500,000 red marbles. Thus, there are one million marbles in total. However, suppose I don’t tell you that and I task you with estimating the proportion of red marbles in the jar. It would be impractical to count all the marbles, so you decide to count a sample of them and use that as the estimate. (This is analogous to the example about stay-at-home parents earlier!)</p>
-<div id="q1" class="section level4">
-<h4><strong>Q1</strong></h4>
-<p>The code below simulates selections from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?</p>
+<div id="q1-the-code-below-simulates-selections-from-the-jar-with-samples-of-size-3-10-100-and-1000-and-displays-the-results-in-histograms.-before-running-this-code-what-do-you-predict-will-happen-when-sample-size-increases.-after-running-the-code-was-your-hypothesis-true" class="section level4">
+<h4><strong>Q1:</strong> The code below simulates selections from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?</h4>
 <pre class="r"><code>marbles &lt;- c()
 
 for (i in 1:10000) {
@@ -322,9 +321,8 @@ ggplot(size1000) +
 <p>You should have found that as the sample size increases, the bar graphs are generally less variable (across different runs of the code) and closer to the true proportion of blue/red marbles in the jar.</p>
 <p>What if we were to rerun this sampling procedure many times (with a fixed sample size),counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram?</p>
 </div>
-<div id="q2" class="section level4">
-<h4><strong>Q2</strong></h4>
-<p>The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe?</p>
+<div id="q2-the-following-code-chooses-1000-samples-from-the-marble-jar-each-of-size-1000.-what-might-you-imagine-this-histogram-will-look-like-what-will-its-center-be-what-shape-will-it-be-try-running-this-code-multiple-times-with-different-sample-sizes.-what-do-you-observe" class="section level4">
+<h4><strong>Q2:</strong> The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe?</h4>
 <pre class="r"><code>v &lt;- c()
 
 for (i in 1:1000) {
@@ -346,9 +344,8 @@ ggplot(data_) +
 <p>The following fact about sampling distributions is possibly less obvious: as sample size increases—the <em>normal model</em> becomes a better and better model for the sampling distribution. This is due to the <strong>Central Limit Theorem</strong>, a pivotal result in statistics. The fact specifically applying to sampling distributions is just one part of the more general result proven by Pierre-Simon Laplace in 1810.</p>
 <p>Now that we know the sampling distribution follows a normal model<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, it is natural to ask about its center and spread.</p>
 </div>
-<div id="q3" class="section level4">
-<h4><strong>Q3</strong></h4>
-<p>What do you think the center of the sampling distribution is? (As a challenge, you can also think about its standard deviation, but it is difficult to guess just by looking at a sampling distribution.) <em>Answer in the code chunk below.</em></p>
+<div id="q3-what-do-you-think-the-center-of-the-sampling-distribution-is-as-a-challenge-you-can-also-think-about-its-standard-deviation-but-it-is-difficult-to-guess-just-by-looking-at-a-sampling-distribution.-answer-in-the-code-chunk-below." class="section level4">
+<h4><strong>Q3:</strong> What do you think the center of the sampling distribution is? (As a challenge, you can also think about its standard deviation, but it is difficult to guess just by looking at a sampling distribution.) <em>Answer in the code chunk below.</em></h4>
 <pre class="r"><code>  # As you can probably imagine,
   # sampling distributions for proportions are centered at p,
   # the true population proportion.
@@ -357,20 +354,49 @@ ggplot(data_) +
   # underlying population proportion.</code></pre>
 <p>As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model, which has standard deviation <span class="math inline">\(\sqrt{np(1-p)}.\)</span> This quantity is the standard deviation of the <em>number</em> of “successes” (blue marbles). However, we are interested in the standard deviation in the <em>proportion</em> of successes. Thus, we divide <span class="math inline">\(\sqrt{np(1-p)}.\)</span> by <span class="math inline">\(n\)</span> as follows:</p>
 <p><span class="math display">\[\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{frac{np(1-p)}{n^2}} = \sqrt{frac{p(1-p)}{n}}.\]</span></p>
+<p>Similarly, the center of the binomial distribution is the true number of successes.<!--FIXME--> Thus, the center of the sampling distribution is the true number of successes divided by <span class="math inline">\(n\)</span>, or <span class="math inline">\(p\)</span>.</p>
+</div>
+<div id="q4-calculate-the-mean-and-standard-deviation-for-a-sampling-distribution-of-proportions-with-p-0.70-and-n-421-answer-in-the-code-chunk-below.." class="section level4">
+<h4><strong>Q4:</strong> Calculate the mean and standard deviation for a sampling distribution of proportions with <span class="math inline">\(p = 0.70\)</span> and <span class="math inline">\(n = 421\)</span> <em>Answer in the code chunk below.</em>.</h4>
+<pre class="r"><code># The answer is as follows:
+mean = 0.70
+SD = sqrt(0.7*0.3/421) # equals about 0.223</code></pre>
+</div>
+<div id="q5-suppose-we-think-the-proportion-of-blue-marbles-is-0.5.-would-you-be-surprised-if-you-took-a-sample-of-1000-marbles-and-51-were-blue-what-if-40-were-blue-how-might-you-quantify-this-answer-answer-in-the-code-chunk-below." class="section level4">
+<h4><strong>Q5:</strong> Suppose we think the proportion of blue marbles is 0.5. Would you be surprised if you took a sample of 1000 marbles and 51% were blue? What if 40% were blue? How might you quantify this answer? <em>Answer in the code chunk below.</em></h4>
+<pre class="r"><code># Let&#39;s think about the underlying sampling distribution.
+# It is centered at the true proportion of blue marbles.
+# Since we suppose that p = 0.5, the standard deviation of
+# the sampling distribution is sqrt(0.5*0.5/1000) ≈ 0.0158.
+# Thus, if we picked 51% blue marbles in our sample, the 1%
+# increase over p represents 0.01/0.0158 ≈ 0.632 SDs above p.
+# How surprising is this? The probability of getting a difference of
+# 0.632 SDs above or below the mean of the distribution (p) is the
+# area under the bell curve to the left and right of 0.632 SDs above
+# and below the mean. Using R code, this probability is 
+# 2*pnorm(-0.632), or about 52.7%. So getting 51% is not 
+# that surprising. On the other hand, if we do a similar analysis with 
+# the 40% case, the probability drops all the way to 0.00000000764% !
+# So this would be extremely surprising. </code></pre>
+<p>The reason we care about sampling distributions is that they allow us to consider the distribution of sample proportions across many different (theoretical) samples. Then, we can compare this distribution to our actual sample and check how unlikely the proportion of our sample is <em>Given that our hypothesis—our null hypothesis—about the distribution’s center is true</em>. This is called <strong>hypothesis testing</strong>.</p>
 <!--TODO If time, go into detail about the SD of the binomial model-->
 <!--QQ: Sample distribution vs. sampling distribution: Which (if either) can mean a distribution of actual data? Which is just "all possible"?-->
+<p><strong>Q6: Read the following article on the study about stay-at-home parents mentioned earlier. We want to examine the sampling distribution for this study. (Let your null hypothesis be “the percentage of female stay-at-home parents is 50%.”) First, draw out the sampling distribution indicating the center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion. Qualitatively, what do you conclude?</strong></p>
 </div>
 </div>
+<div id="sampling-distributions-for-means" class="section level2">
+<h2>Sampling distributions for means</h2>
 <div id="references" class="section level3">
 <h3>References</h3>
 <p><a href="https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html</a> <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/sample.html" class="uri">https://stat.ethz.ch/R-manual/R-devel/library/base/html/sample.html</a> <a href="https://www.datamentor.io/r-programming/for-loop/" class="uri">https://www.datamentor.io/r-programming/for-loop/</a> <a href="https://www.w3schools.com/r/r_for_loop.asp" class="uri">https://www.w3schools.com/r/r_for_loop.asp</a> <!--https://stat.ethz.ch/R-manual/R-devel/library/base/html/Colon.html
 https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/append--> <a href="http://www.simonqueenborough.info/R/stats-advanced/sampling" class="uri">http://www.simonqueenborough.info/R/stats-advanced/sampling</a> <a href="https://www.tutorialspoint.com/r/r_binomial_distribution.htm" class="uri">https://www.tutorialspoint.com/r/r_binomial_distribution.htm</a> <a href="http://seankross.com/rbootcamp/simulation.html" class="uri">http://seankross.com/rbootcamp/simulation.html</a></p>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body">
 <div id="ref-barroso_fry_2021" class="csl-entry">
-Barroso, Amanda, and Richard Fry. 2021. <span>“On Some Demographic Measures, People in Same-Sex Marriages Differ from Those in Opposite-Sex Marriages.”</span> <em>Pew Research Center</em>. Pew Research Center. <a href="https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/">https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/</a>.
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Barroso A and Fry R 2021 On some demographic measures, people in same-sex marriages differ from those in opposite-sex marriages <em>Pew Research Center</em></div>
 </div>
 <div id="ref-veaux2012stats" class="csl-entry">
-Veaux, Richard. 2012. <em>Stats : Data and Models</em>. Boston: Addison-Wesley.
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Veaux R 2012 <em>Stats : Data and models</em> (Boston: Addison-Wesley)</div>
+</div>
 </div>
 </div>
 </div>

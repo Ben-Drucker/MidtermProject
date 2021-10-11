@@ -2,7 +2,7 @@
 title: 'Sampling Distributions'
 author: Ben Drucker
 bibliography: bib.bib
-# csl: NumberedFormat.csl
+csl: NumberedFormat.csl
 output:
   html_document:
     toc: yes
@@ -38,8 +38,7 @@ Read on to learn!
 
 Let's begin a simple example: marbles in a jar. Suppose I have a jar filled with 500,000 blue marbles and 500,000 red marbles. Thus, there are one million marbles in total. However, suppose I don't tell you that and I task you with estimating the proportion of red marbles in the jar. It would be impractical to count all the marbles, so you decide to count a sample of them and use that as the estimate. (This is analogous to the example about stay-at-home parents earlier!)
 
-#### **Q1**
-The code below simulates selections from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?
+#### **Q1:** The code below simulates selections from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?
 
 ```{r}
 marbles <- c()
@@ -74,8 +73,7 @@ You should have found that as the sample size increases, the bar graphs are gene
 
 What if we were to rerun this sampling procedure many times (with a fixed sample size),counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram?  
 
-#### **Q2**
-The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe?
+#### **Q2:** The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe?
 
 ```{r}
 v <- c()
@@ -103,8 +101,7 @@ The following fact about sampling distributions is possibly less obvious: as sam
 
 Now that we know the sampling distribution follows a normal model[^cond], it is natural to ask about its center and spread. 
 
-#### **Q3**
-What do you think the center of the sampling distribution is? (As a challenge, you can also think about its standard deviation, but it is difficult to guess just by looking at a sampling distribution.) *Answer in the code chunk below.*
+#### **Q3:** What do you think the center of the sampling distribution is? (As a challenge, you can also think about its standard deviation, but it is difficult to guess just by looking at a sampling distribution.) *Answer in the code chunk below.*
 
 ```{r}
   # As you can probably imagine,
@@ -117,15 +114,47 @@ What do you think the center of the sampling distribution is? (As a challenge, y
 
 As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model, which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (blue marbles). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
 
-$$\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{frac{np(1-p)}{n^2}} = \sqrt{frac{p(1-p)}{n}}.$$
+$$\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{\frac{np(1-p)}{n^2}} = \sqrt{\frac{p(1-p)}{n}}.$$
 
 Similarly, the center of the binomial distribution is the true number of successes.<!--FIXME--> Thus, the center of the sampling distribution is the true number of successes divided by $n$, or $p$. 
 
-#### **Q4:** Calculate the mean and standard deviation for a sampling distribution with $p = 0.70$ and $n = 421$
+#### **Q4:** Calculate the mean and standard deviation for a sampling distribution of proportions with $p = 0.70$ and $n = 421$ *Answer in the code chunk below.*.
 
+```{r}
+# The answer is as follows:
+mean = 0.70
+SD = sqrt(0.7*0.3/421) # equals about 0.223
+```
+
+#### **Q5:** Suppose we think the proportion of blue marbles is 0.5. Would you be surprised if you took a sample of 1000 marbles and 51% were blue? What if 40% were blue? How might you quantify this answer? *Answer in the code chunk below.*
+
+```{r}
+# Let's think about the underlying sampling distribution.
+# It is centered at the true proportion of blue marbles.
+# Since we suppose that p = 0.5, the standard deviation of
+# the sampling distribution is sqrt(0.5*0.5/1000) ≈ 0.0158.
+# Thus, if we picked 51% blue marbles in our sample, the 1%
+# increase over p represents 0.01/0.0158 ≈ 0.632 SDs above p.
+# How surprising is this? The probability of getting a difference of
+# 0.632 SDs above or below the mean of the distribution (p) is the
+# area under the bell curve to the left and right of 0.632 SDs above
+# and below the mean. Using R code, this probability is 
+# 2*pnorm(-0.632), or about 52.7%. So getting 51% is not 
+# that surprising. On the other hand, if we do a similar analysis with 
+# the 40% case, the probability drops all the way to 0.00000000764% !
+# So this would be extremely surprising. 
+
+```
+
+The reason we care about sampling distributions is that they allow us to consider the distribution of sample proportions across many different (theoretical) samples. Then, we can compare this distribution to our actual sample and check how unlikely the proportion of our sample is *Given that our hypothesis---our null hypothesis---about the distribution's center is true*. This is called **hypothesis testing**. 
 
 <!--TODO If time, go into detail about the SD of the binomial model-->
 <!--QQ: Sample distribution vs. sampling distribution: Which (if either) can mean a distribution of actual data? Which is just "all possible"?-->
+
+**Q6: Read the following article on the study about stay-at-home parents mentioned earlier. We want to examine the sampling distribution for this study. (Let your null hypothesis be "the percentage of female stay-at-home parents is 50%.") First, draw out the sampling distribution indicating the center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion. Qualitatively, what do you conclude?**
+
+## Sampling distributions for means
+
 
 
 [^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
