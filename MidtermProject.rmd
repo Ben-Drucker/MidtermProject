@@ -28,7 +28,7 @@ theme_set(theme_minimal(base_family = "Georgia"))
 
 ### Introduction and Motivation
 
-Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of stay-at-home fathers is 50% (i.e., is there an even gender split in stay-at-home parents[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from [this](https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/) Pew study (@barroso_fry_2021).)
+Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of stay-at-home fathers is 50% (i.e., is there an even gender split in stay-at-home parents[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from [this]() Pew study (@barroso_fry_2021).)
 
 For these types of questions, it would be completely impractical to survey every household. However, it *is* practical (and common) to survey a limited subset (**sample**) of the population in question. Obviously, it is unlikely for the answer to our question to be found *exactly*, using a sample—after all, we are not surveying the whole population! But what does it take to get an answer that is "close enough" to the exact answer? How many people do we need to survey? What assumptions about our data need to be met to accept our "close enough answer" as truly being "close enough?"
 
@@ -71,7 +71,7 @@ ggplot(size1000) +
 
 You should have found that as the sample size increases, the bar graphs are generally less variable (across different runs of the code) and closer to the true proportion of blue/red marbles in the jar.
 
-What if we were to rerun this sampling procedure many times (with a fixed sample size),counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram?  
+What if we were to rerun this sampling procedure many times (with a fixed sample size), counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram?  
 
 #### **Q2:** The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe?
 
@@ -153,9 +153,56 @@ The reason we care about sampling distributions is that they allow us to conside
 
 **Q6: Read the following article on the study about stay-at-home parents mentioned earlier. We want to examine the sampling distribution for this study. (Let your null hypothesis be "the percentage of female stay-at-home parents is 50%.") First, draw out the sampling distribution indicating the center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion. Qualitatively, what do you conclude?**
 
+<!--TODO: Answer-->
+
 ## Sampling distributions for means
 
+This section will explore sampling distributions for *means*. In the last section, we looked at sampling distributions for proportions. 
 
+To see that the underlying principles of sampling distributions hold, consider the following example. Suppose we again have 10000<!--TODO: fix 1M/10000--> marbles in a jar, but this time, the marbles' diameters are integers from 1 to 10 (inclusive). Suppose that the population mean of the marble diameters is 5cm. Again, supposing we don't know this, we want to estimate the mean marble diameter using a sample. 
+
+<!--FIXME: Replacement question -->
+
+#### **Q7:** The following code shows histograms of marble diameters found in random samples of differing sizes. It also shows the mean of the sample. Try running the code multiple times. Verify that the mean is more stable for samples of larger sizes.
+
+```{r}
+marbles <- c()
+for (diam in 1:10) {
+    for (i in 1:1000) {
+    marbles <- append(marbles, diam)
+  }
+}
+# TODO: make the histograms flush and with 10 bins
+size3 <- tibble(marbles3 = sample(marbles, 3))
+size10 <- tibble(marbles10 = sample(marbles, 10))
+size100 <- tibble(marbles100 = sample(marbles, 100))
+size1000 <- tibble(marbles1000 = sample(marbles, 1000))
+
+size3 <- mutate(size3, mean_ = mean(marbles3), count_ = n()/2)
+size10 <- mutate(size10, mean_ = mean(marbles10), count_ = n()/2)
+size100 <- mutate(size100, mean_ = mean(marbles100), count_ = n()/2)
+size1000 <- mutate(size1000, mean_ = mean(marbles1000), count_ = n()/2)
+
+marble_plot_mean <- ggplot(size3) +
+  geom_bar(mapping = aes(x = marbles3)) +
+  geom_point(mapping = aes(x = mean_, y = count_),
+  size = 10, color = "red", alpha = 0.5, shape = "square") +
+ggplot(size10) +
+  geom_bar(mapping = aes(x = marbles10)) +
+  geom_point(mapping = aes(x = mean_, y = count_),
+  size = 10, color = "red", alpha = 0.5, shape = "square") +
+ggplot(size100) +
+  geom_bar(mapping = aes(x = marbles100)) +
+  geom_point(mapping = aes(x = mean_, y = count_),
+  size = 10, color = "red", alpha = 0.5, shape = "square") +
+ggplot(size1000) +
+  geom_bar(mapping = aes(x = marbles1000)) +
+  geom_point(mapping = aes(x = mean_, y = count_),
+  size = 10, color = "red", alpha = 0.5, shape = "square")
+
+# UNCOMMENT TO SHOW RESULTING PLOT
+marble_plot_mean
+```
 
 [^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
 [^cond]: (Under special conditions we will outline earlier)
