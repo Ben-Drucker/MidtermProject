@@ -230,6 +230,18 @@ Yes! This distribution looks normal! What is its center and standard deviation? 
 [^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
 [^cond]: (Under special conditions we will outline earlier)
 
+## Assumptions for using the normal model
+
+As was mentioned earlier, there are a few assumptions we have to verify to use a normal distribution to model a sampling distribution.
+
+Whether we are looking at a sampling distribution for a proportion or for a mean, me must always verify the following assumptions:
+1.  **Independence:** Each of the observations within a sample must be taken independently.
+    It can be very difficult (if not impossible) to verify this assumption. However, we can consider the following 
+
+2.  **Sample Size:** By the Central Limit Theorem, we must have a large enough sample size so that the normal model is a reasonable approximation.
+
+
+
 ### References
 
 https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html
