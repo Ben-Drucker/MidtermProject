@@ -38,9 +38,9 @@ Read on to learn!
 
 Let's begin a simple example: marbles in a jar. Suppose I have a jar filled with 500,000 blue marbles and 500,000 red marbles. Thus, there are one million marbles in total. However, suppose I don't tell you that and I task you with estimating the proportion of red marbles in the jar. It would be impractical to count all the marbles, so you decide to count a sample of them and use that as the estimate. (This is analogous to the example about stay-at-home parents earlier!)
 
-#### **Q1:** The code below simulates selections from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?
+#### **Q1:** The code below[^doc] simulates selections from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Before running this code, what do you predict will happen when sample size increases. After running the code, was your hypothesis true?
 
-```{r}
+```{r fig.show='hide'}
 marbles <- c()
 
 for (i in 1:10000) {
@@ -65,8 +65,7 @@ ggplot(size100) +
 ggplot(size1000) +
   geom_bar(mapping = aes(x = marbles1000))
 
-# UNCOMMENT TO SHOW RESULTING PLOT
-# marble_plot
+marble_plot
 ```
 
 You should have found that as the sample size increases, the bar graphs are generally less variable (across different runs of the code) and closer to the true proportion of blue/red marbles in the jar.
@@ -75,7 +74,7 @@ What if we were to rerun this sampling procedure many times (with a fixed sample
 
 #### **Q2:** The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe?
 
-```{r}
+```{r fig.show='hide'}
 v <- c()
 
 for (i in 1:1000) {
@@ -120,7 +119,7 @@ Similarly, the center of the binomial distribution is the true number of success
 
 #### **Q4:** Calculate the mean and standard deviation for a sampling distribution of proportions with $p = 0.70$ and $n = 421$ *Answer in the code chunk below.*.
 
-```{r}
+```{r results='hide'}
 # The answer is as follows:
 mean = 0.70
 SD = sqrt(0.7*0.3/421) # equals about 0.223
@@ -155,7 +154,7 @@ The reason we care about sampling distributions is that they allow us to conside
 
 <!--TODO: Answer-->
 
-## Sampling distributions for means
+### Sampling distributions for means
 
 This section will explore sampling distributions for *means*. In the last section, we looked at sampling distributions for proportions. 
 
@@ -165,7 +164,7 @@ To see that the underlying principles of sampling distributions hold, consider t
 
 #### **Q7:** The following code shows histograms of marble diameters found in random samples of differing sizes. It also shows the mean of the sample. Try running the code multiple times. Verify that the mean is more stable for samples of larger sizes.
 
-```{r}
+```{r fig.show='hide'}
 marbles <- c()
 for (diam in 1:9) {
     for (i in 1:1000) {
@@ -203,13 +202,12 @@ ggplot(size1000) +
   boundary = 0) +
   xlim(0, 10) +
   geom_vline(aes(xintercept = mean_), color = "red")
-# UNCOMMENT TO SHOW RESULTING PLOT
 marble_plot_mean
 ```
 
 As we did before, let's now automate this process and create a histogram of means across many different samples.
 
-```{r}
+```{r fig.show = 'hide'}
 v <- c()
 
 for (i in 1:1000) {
@@ -228,28 +226,29 @@ Yes! This distribution looks normal! What is its center and standard deviation? 
 <!--If time, explain reason for this standard deviation.-->
 
 [^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
-[^cond]: (Under special conditions we will outline earlier)
+[^cond]: (Under special conditions we will outline later)
+[^doc]: `for` loop tutorials from @r_for and @r_for_2; `sample` documentation from @r_sample, @r_sample_3, @r_sample_4, and @r_sample_2; `colon` operator documentation from @r_colon; `append` documentation from @r_append; 
 
-## Assumptions for using the normal model
+### Assumptions for using the normal model
 
 As was mentioned earlier, there are a few assumptions we have to verify to use a normal distribution to model a sampling distribution.
 
 Whether we are looking at a sampling distribution for a proportion or for a mean, me must always verify the following assumptions:
-1.  **Independence:** Each of the observations within a sample must be taken independently.
-    It can be very difficult (if not impossible) to verify this assumption. However, we can consider the following 
 
-2.  **Sample Size:** By the Central Limit Theorem, we must have a large enough sample size so that the normal model is a reasonable approximation.
+1. **Independence:** Each of the observations within a sample must be taken independently. This is often difficult (if not impossible) to check 
+2. **Sample Size:** By the Central Limit Theorem, we must have a large enough sample size so that the normal model is a reasonable approximation.
 
+The following conditions help us check these assumptions.
 
+3. **Randomization:** If conducing an observational study, each observation in the sample should be chosen through random selection. If conducting an experiment, random assignment should be employed.  
+4. **10% condition:** The sample size should be less than 10% of the population size
 
-### References
+For a sampling distribution of proportions, we look at the following condition:
 
-https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html
-https://stat.ethz.ch/R-manual/R-devel/library/base/html/sample.html
-https://www.datamentor.io/r-programming/for-loop/
-https://www.w3schools.com/r/r_for_loop.asp
-<!--https://stat.ethz.ch/R-manual/R-devel/library/base/html/Colon.html
-https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/append-->
-http://www.simonqueenborough.info/R/stats-advanced/sampling
-https://www.tutorialspoint.com/r/r_binomial_distribution.htm
-http://seankross.com/rbootcamp/simulation.html
+5. **Success/failure condition:** There should be at least 10 "successes" and 10 "failures," where "successes" and "failures" are just names for the two groups we're studying.
+
+For a sampling distribution of means, we swap in the following condition:
+
+5. **Size:** If the population is symmetric and unimodal, a smaller sample size works. However, if this is not the case, samples may need to be larger.
+
+### References @r_bib
