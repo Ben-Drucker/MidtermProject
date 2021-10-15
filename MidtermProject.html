@@ -441,7 +441,13 @@ data_ &lt;- tibble(mean_ = v)
 ggplot(data_) +
   geom_histogram(mapping = aes(x = mean_)) +
   xlim(4.5, 5.5)</code></pre>
-<p>Yes! This distribution looks normal! What is its center and standard deviation? It should again feel natural the its center is <span class="math inline">\(\mu\)</span>, the population mean. And just like before, standard deviation is also tricky. Here it is <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span>, where <span class="math inline">\(\sigma\)</span> is the standard deviation of the <em>population</em>. <!--If time, explain reason for this standard deviation.--></p>
+<p>Yes! This distribution looks normal! What is its center and standard deviation? It should again feel natural the its center is <span class="math inline">\(\mu\)</span>, the population mean. And just like before, standard deviation is also tricky. Here it is <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span>, where <span class="math inline">\(\sigma\)</span> is the standard deviation of the <em>population</em>. <!--TODO: If time, explain reason for this standard deviation.--></p>
+<p><strong>Q8:</strong> Sometimes our sampling distribution is centered at zero. Why might this be? (Hint: What might we be trying to test with such a distribution) <em>Answer in code chuck below</em></p>
+<pre class="r"><code># Our sampling distribution would be centered at zero if we
+# are hypothesis testing a difference between two means or two proportions,
+# and we hypothesize that the true difference is zero.
+# One example is the study about incomes in marriages with different gender
+# configurations mentioned in the introduction.</code></pre>
 </div>
 </div>
 <div id="assumptions-for-using-the-normal-model" class="section level3">
@@ -467,41 +473,45 @@ ggplot(data_) +
 <li><strong>Size:</strong> If the population is symmetric and unimodal, a smaller sample size works. However, if this is not the case, samples may need to be larger.</li>
 </ol>
 </div>
-<div id="references-r_bib" class="section level3 unnumbered">
-<h3 class="unnumbered">References <span class="citation">[10]</span></h3>
+<div id="conclusions" class="section level3">
+<h3>Conclusions</h3>
+<p>In this article, we began by motivating sampling distributions. Sampling distributions are critical in enabling us to answer questions about populations using only samples. (After all, we don’t expect all samples to be the same — that’s sample variability). They allow us to view a theoretical distribution of all possible samples we could take in a population, which allows us to check how our sample stacks up. A crucial component is the famed <strong>Central Limit Theorem</strong>, which says our sampling distributions can be reasonably modeled after a normal distribution (given that special conditions are satisfied.)</p>
+</div>
+<div id="referencesrefref" class="section level3 unnumbered">
+<h3 class="unnumbered">References<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></h3>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-barroso_fry_2021" class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Barroso A and Fry R 2021 On some demographic measures, people in same-sex marriages differ from those in opposite-sex marriages <em>Pew Research Center</em></div>
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">A. Barroso and R. Fry, <span>“On some demographic measures, people in same-sex marriages differ from those in opposite-sex marriages,”</span> <em>Pew Research Center</em>. Pew Research Center, Jul-2021 [Online]. Available: <a href="https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/">https://www.pewresearch.org/fact-tank/2021/07/07/on-some-demographic-measures-people-in-same-sex-marriages-differ-from-those-in-opposite-sex-marriages/</a></div>
 </div>
 <div id="ref-r_for" class="csl-entry">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">Anon 2018 R for loop (with examples) <em>DataMentor</em></div>
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline"><span>“R for loop (with examples),”</span> <em>DataMentor</em>. Oct-2018 [Online]. Available: <a href="https://www.datamentor.io/r-programming/for-loop/">https://www.datamentor.io/r-programming/for-loop/</a></div>
 </div>
 <div id="ref-r_for_2" class="csl-entry">
-<div class="csl-left-margin">[3] </div><div class="csl-right-inline">Contributors W S <em>R For Loop</em></div>
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">W3 Schools Contributors, <em>R For Loop</em>. W3 Schools [Online]. Available: <a href="https://www.w3schools.com/r/r_for_loop.asp">https://www.w3schools.com/r/r_for_loop.asp</a></div>
 </div>
 <div id="ref-r_sample" class="csl-entry">
-<div class="csl-left-margin">[4] </div><div class="csl-right-inline">Maechler M Random samples and permutations <em>R: Random Samples and Permutations</em></div>
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">M. Maechler, <span>“Random samples and permutations,”</span> <em>R: Random Samples and Permutations</em>. ETH Zurich [Online]. Available: <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/sample.html">https://stat.ethz.ch/R-manual/R-devel/library/base/html/sample.html</a></div>
 </div>
 <div id="ref-r_sample_3" class="csl-entry">
-<div class="csl-left-margin">[5] </div><div class="csl-right-inline">Kross S 2016 <em>Simulation</em></div>
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">S. Kross, <em>Simulation</em>. seankross.com, Jan-2016 [Online]. Available: <a href="http://seankross.com/rbootcamp/simulation.html">http://seankross.com/rbootcamp/simulation.html</a></div>
 </div>
 <div id="ref-r_sample_4" class="csl-entry">
-<div class="csl-left-margin">[6] </div><div class="csl-right-inline">contributors tutorialspoint.com Binomial distribution <em>R - Binomial Distribution</em></div>
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">tutorialspoint.com contributors, <span>“Binomial distribution,”</span> <em>R - Binomial Distribution</em>. tutorialspoint.com [Online]. Available: <a href="https://www.tutorialspoint.com/r/r_binomial_distribution.htm">https://www.tutorialspoint.com/r/r_binomial_distribution.htm</a></div>
 </div>
 <div id="ref-r_sample_2" class="csl-entry">
-<div class="csl-left-margin">[7] </div><div class="csl-right-inline">Contributors Q L Random data and sampling <em>Introduction to R</em></div>
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">Queensborough Lab Contributors, <span>“Random data and sampling,”</span> <em>Introduction to R</em>. Queensborough Lab [Online]. Available: <a href="http://www.simonqueenborough.info/R/stats-advanced/sampling">http://www.simonqueenborough.info/R/stats-advanced/sampling</a></div>
 </div>
 <div id="ref-r_colon" class="csl-entry">
-<div class="csl-left-margin">[8] </div><div class="csl-right-inline">Maechler M Colon operator <em>R: Colon Operator</em></div>
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">M. Maechler, <span>“Colon operator,”</span> <em>R: Colon Operator</em>. ETH Zurich [Online]. Available: <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Colon.html">https://stat.ethz.ch/R-manual/R-devel/library/base/html/Colon.html</a></div>
 </div>
 <div id="ref-r_append" class="csl-entry">
-<div class="csl-left-margin">[9] </div><div class="csl-right-inline">Contributors R Append: Vector merging <em>RDocumentation</em></div>
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">Rdocumentation Contributors, <span>“Append: Vector merging,”</span> <em>RDocumentation</em>. RDocumentation [Online]. Available: <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/append">https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/append</a></div>
 </div>
 <div id="ref-r_bib" class="csl-entry">
-<div class="csl-left-margin">[10] </div><div class="csl-right-inline">Yihui Xie C D 2021 R markdown cookbook <em>4.5 Bibliographies and citations</em></div>
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">C. D. Yihui Xie, <span>“R markdown cookbook,”</span> <em>4.5 Bibliographies and citations</em>. Oct-2021 [Online]. Available: <a href="https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html">https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html</a></div>
 </div>
 <div id="ref-veaux2012stats" class="csl-entry">
-<div class="csl-left-margin">[11] </div><div class="csl-right-inline">Veaux R 2012 <em>Stats : Data and models</em> (Boston: Addison-Wesley)</div>
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">R. Veaux, <em>Stats : Data and models</em>. Boston: Addison-Wesley, 2012. </div>
 </div>
 </div>
 </div>
@@ -510,7 +520,8 @@ ggplot(data_) +
 <ol>
 <li id="fn1"><p>This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p><code>for</code> loop tutorials from <span class="citation">[2]</span> and <span class="citation">[3]</span>; <code>sample</code> documentation from <span class="citation">[4]</span>, <span class="citation">[5]</span>, <span class="citation">[6]</span>, and <span class="citation">[7]</span>; <code>colon</code> operator documentation from <span class="citation">[8]</span>; <code>append</code> documentation from <span class="citation">[9]</span>;<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>(Under special conditions we will outline earlier)<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>(Under special conditions we will outline later)<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Bibliography-making resources from <span class="citation">[10]</span>.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 

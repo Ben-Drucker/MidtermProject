@@ -11,9 +11,9 @@ output:
     css: stat21-lab-theme.css
   pdf_document:
     toc: yes
+    extra_dependencies: ["url"]
 nocite: |
   @veaux2012stats
-
 ---
 
 ```{r setup, include=FALSE}
@@ -28,7 +28,7 @@ theme_set(theme_minimal(base_family = "Georgia"))
 
 ### Introduction and Motivation
 
-Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of stay-at-home fathers is 50% (i.e., is there an even gender split in stay-at-home parents[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from [this]() Pew study (@barroso_fry_2021).)
+Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to proportions or means of some quality of the population. For example, we might wonder if the proportion of female gun-owners is 50% (i.e., is there an even gender split in American gun ownership[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages. (Both of these questions come from [this]() Pew study (@barroso_fry_2021).)
 
 For these types of questions, it would be completely impractical to survey every household. However, it *is* practical (and common) to survey a limited subset (**sample**) of the population in question. Obviously, it is unlikely for the answer to our question to be found *exactly*, using a sample—after all, we are not surveying the whole population! But what does it take to get an answer that is "close enough" to the exact answer? How many people do we need to survey? What assumptions about our data need to be met to accept our "close enough answer" as truly being "close enough?"
 
@@ -57,13 +57,21 @@ size100 <- tibble(marbles100 = sample(marbles, 100))
 size1000 <- tibble(marbles1000 = sample(marbles, 1000))
 
 marble_plot = ggplot(size3) +
-  geom_bar(mapping = aes(x = marbles3)) +
+  geom_bar(mapping = aes(x = marbles3, fill = marbles3)) +
+  scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) +
+  xlim("blue", "red") +
 ggplot(size10) +
-  geom_bar(mapping = aes(x = marbles10)) +
+  geom_bar(mapping = aes(x = marbles10, fill = marbles10)) +
+  scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) +
+  xlim("blue", "red") +
 ggplot(size100) +
-  geom_bar(mapping = aes(x = marbles100)) +
+  geom_bar(mapping = aes(x = marbles100, fill = marbles100)) +
+  scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) +
+  xlim("blue", "red") +
 ggplot(size1000) +
-  geom_bar(mapping = aes(x = marbles1000))
+  geom_bar(mapping = aes(x = marbles1000, fill = marbles1000)) +
+  scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) +
+  xlim("blue", "red")
 
 marble_plot
 ```
@@ -150,9 +158,23 @@ The reason we care about sampling distributions is that they allow us to conside
 <!--TODO If time, go into detail about the SD of the binomial model-->
 <!--QQ: Sample distribution vs. sampling distribution: Which (if either) can mean a distribution of actual data? Which is just "all possible"?-->
 
-**Q6: Read the following article on the study about stay-at-home parents mentioned earlier. We want to examine the sampling distribution for this study. (Let your null hypothesis be "the percentage of female stay-at-home parents is 50%.") First, draw out the sampling distribution indicating the center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion. Qualitatively, what do you conclude?**
+**Q6: Read the introduction to the following article on [https://news.gallup.com/poll/264932/percentage-americans-own-guns.aspx](the study about gun ownership mentioned earlier.) We want to examine the sampling distribution for this study. (Let your null hypothesis be "the difference in percentage of males vs. who are male vs. female is 0%.") First, draw out the sampling distribution indicating the center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion, $\hat{p}$. Qualitatively, what do you conclude?**
 
-<!--TODO: Answer-->
+```{r}
+# From the article, 62% of gun owners are male 
+# (which, for simplicity means that 38% of gun owners are female.)
+# Since our assumption was that there is no gender gap in gun ownership,
+# our sampling distribution is centered at 0.5, and has a standard
+# deviation of sqrt(0.5*0.5/1269) = 0.014 since the sample size was 1296.
+# Graph below:
+ggplot(data = data.frame(x = c(0.35, 0.65)), mapping =  aes(x = x)) +
+  stat_function(fun = dnorm, args = list(0.5, 0.014)) +
+  geom_vline(xintercept = 0.38, color = "red")
+
+# Based on the graph, it is very unlikely that our
+# sample proportion of 38% would have been chosen, given that
+# we assume the true proportion of female gun owners is 50%.
+```
 
 ### Sampling distributions for means
 
@@ -223,11 +245,23 @@ ggplot(data_) +
 ```
 
 Yes! This distribution looks normal! What is its center and standard deviation? It should again feel natural the its center is $\mu$, the population mean. And just like before, standard deviation is also tricky. Here it is $\frac{\sigma}{\sqrt{n}}$, where $\sigma$ is the standard deviation of the *population*.
-<!--If time, explain reason for this standard deviation.-->
+<!--TODO: If time, explain reason for this standard deviation.-->
+
+**Q8:** Sometimes our sampling distribution is centered at zero. Why might this be? (Hint: What might we be trying to test with such a distribution) *Answer in code chuck below*
+
+```{r}
+# Our sampling distribution would be centered at zero if we
+# are hypothesis testing a difference between two means or two proportions,
+# and we hypothesize that the true difference is zero.
+# One example is the study about incomes in marriages with different gender
+# configurations mentioned in the introduction.
+```
 
 [^gender-simplicity]: This question assumes a gender binary for simplicity, though this binary does not reflect the true range of genders.
 [^cond]: (Under special conditions we will outline later)
 [^doc]: `for` loop tutorials from @r_for and @r_for_2; `sample` documentation from @r_sample, @r_sample_3, @r_sample_4, and @r_sample_2; `colon` operator documentation from @r_colon; `append` documentation from @r_append; 
+[^refref]: Bibliography-making resources from @r_bib.
+
 
 ### Assumptions for using the normal model
 
@@ -251,4 +285,8 @@ For a sampling distribution of means, we swap in the following condition:
 
 5. **Size:** If the population is symmetric and unimodal, a smaller sample size works. However, if this is not the case, samples may need to be larger.
 
-### References @r_bib
+### Conclusions
+
+In this article, we began by motivating sampling distributions. Sampling distributions are critical in enabling us to answer questions about populations using only samples. (After all, we don't expect all samples to be the same — that's sample variability). They allow us to view a theoretical distribution of all possible samples we could take in a population, which allows us to check how our sample stacks up. A crucial component is the famed **Central Limit Theorem**, which says our sampling distributions can be reasonably modeled after a normal distribution (given that special conditions are satisfied.)
+
+### References[^refref]
