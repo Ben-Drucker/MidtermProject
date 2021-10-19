@@ -1,5 +1,5 @@
 ---
-title: 'Sampling Distributions'
+title: 'Sampling Distributions and Their Ample Uses!'
 author: Ben Drucker
 bibliography: bib.bib
 csl: NumberedFormat.csl
@@ -99,7 +99,7 @@ ggplot(size1000) +
 
 What if we were to rerun this sampling procedure many times (with a fixed sample size), counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram?  
 
-#### **Q2:** The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe? *Answer here: [Ans: Q2]*
+#### **Q2:** The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram of proportions of blue marbles sampled will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe? *Answer here: [Ans: Q2]*
 
 ```{r fig.show='hide'}
 v <- c()  # Initialize vector of sample proportion values
@@ -117,7 +117,7 @@ data_ <- tibble(count = v) # make a tibble out of v
 
 samp_dist <- ggplot(data_) + # make the plot
   geom_histogram(mapping = aes(x = count), 
-  binwidth = 0.005, color = "#eaee05c2", fill = "#ffa600d5")
+  binwidth = 0.005, color = "#eaee0594", fill = "#38c400b2")
 ```
 
 This type of histogram is called a **sampling distribution of a proportion**. This is because it is the *distribution* of *samples* for which we are trying to gain information about a population *proportion*.
@@ -140,7 +140,8 @@ Now that we have the mean and standard deviation of the distribution, we can plo
 # the histogram is 0.005 binwidth * 1000 points = 5
 samp_dist_new <- samp_dist +
   stat_function(fun = function(x) 5*dnorm(x, mean = mean(v), 
-  sd = sqrt(0.5*0.5/1000)), color = "#ff0000", size = 2, alpha = 0.85, linetype = 5)
+  sd = sqrt(0.5*0.5/1000)), color = "#008321be", 
+  size = 2, alpha = 0.85, linetype = 5)
 
 samp_dist_new
 ```
@@ -211,7 +212,8 @@ ggplot(size1000) +
 
 As we did before, let's now automate this process and create a histogram of means across many different samples.
 
-```{r fig.show = 'hide'}
+```{r}
+
 v <- c()
 
 for (i in 1:1000) {
@@ -221,9 +223,17 @@ for (i in 1:1000) {
 
 data_ <- tibble(mean_ = v)
 
+# Below, we plot a normal curve over our sampling distribution.
+# (We multiply the normal curve by 25 because the area under of
+# the histogram is 0.025 binwidth * 1000 points = 25
+
 ggplot(data_) +
-  geom_histogram(mapping = aes(x = mean_)) +
-  xlim(4.5, 5.5)
+  geom_histogram(mapping = aes(x = mean_), binwidth = 0.025, 
+  color = "#eaee0594", fill = "#38c400b2") +
+  xlim(4.5, 5.5) + 
+  stat_function(fun = function(x) 25*dnorm(x, mean = mean(v), 
+  sd = sqrt(sd(marbles)**2/1000)), color = "#008321be", 
+  size = 2, alpha = 0.85, linetype = 5)
 ```
 
 Yes! This distribution looks normal! What is its center and standard deviation? It should again feel natural the its center is $\mu$, the population mean. And just like before, standard deviation is also tricky. Here it is $\frac{\sigma}{\sqrt{n}}$, where $\sigma$ is the standard deviation of the *population*.
@@ -274,6 +284,7 @@ marble_plot
 ```
 
 If this code was run multiple times, we would see that the histograms corresponding to larger samples vary less.
+
 #### Ans: Q2
 You should have observed that the distribution gets narrower and narrower as the sample size increases. This should intuitively make sense. As we increase sample size, it seems more likely that each sample is closer to the true proportion of blue marbles in the jar. Here is a simulated sampling distribution:
 ```{r echo = FALSE}
