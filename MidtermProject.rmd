@@ -145,7 +145,10 @@ data_ <- tibble(count = v) # make a tibble out of v
 samp_dist <- ggplot(data_) + # make the plot
   geom_histogram(mapping = aes(x = count),
   binwidth = 0.005, color = "#eaee0594", fill = "#38c400b2") +
-  xlim(0.4, 0.6)
+  xlim(0.4, 0.6) +
+  labs(x = "Individual Sample Observations and Mean of Sample") +
+  labs(y = "Counts of Individual Sample Means") +
+  labs(title = "Sampling Distribution of 1000 Samples of Size 1000")
 ```
 
 This type of histogram is called a **sampling distribution of a proportion**. This is because it is the *distribution* of *samples* from which we are trying to gain information about a population *proportion*.
@@ -164,7 +167,7 @@ $$\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{\frac{np(
 
 Similarly, the center of the binomial distribution is the true number of successes. Thus, the center of the sampling distribution is the true number of successes divided by $n$, or $p$.
 
-Now that we have the mean and standard deviation of the distribution, we can plot a normal curve over our simulated sampling distribution:
+Now that we have the mean and standard deviation of the distribution, we can plot a normal curve over the simulated sampling distribution (from Q2):
 
 ```{r}
 # Below, we plot a normal curve over our sampling distribution.
@@ -174,7 +177,7 @@ samp_dist_new <- samp_dist +
   stat_function(fun = function(x) 5 * dnorm(x, mean = mean(v),
   sd = sqrt(0.5 * 0.5 / 1000)), color = "#008321be",
   size = 2, alpha = 0.85, linetype = 5) +
-  labs(title = "Sampling Distribution for Proportions", 
+  labs(title = "Sampling Distribution of 1000 Samples of Size 1000 Including Normal Curve", 
   x = "Proportion of Blue Marbles",
   y = "Number of Samples")
 
@@ -228,21 +231,33 @@ marble_plot_mean <- ggplot(size3) +
   boundary = 0) +
   xlim(0, 10) +
   geom_vline(aes(xintercept = mean_), color = "red") +
+  labs(x = "Individual Sample Observations and Mean of Sample") +
+  labs(y = "Counts of Individual Sample Means") +
+  labs(title = "Simulated Sample of Size 3") +
 ggplot(size10) +
   geom_histogram(mapping = aes(x = marbles10), bins = 10,
   boundary = 0) +
   xlim(0, 10) +
   geom_vline(aes(xintercept = mean_), color = "red") +
+  labs(x = "Individual Sample Observations and Mean of Sample") +
+  labs(y = "Counts of Individual Sample Means") +
+  labs(title = "Simulated Sample of Size 10") +
 ggplot(size100) +
   geom_histogram(mapping = aes(x = marbles100), bins = 10,
   boundary = 0) +
   xlim(0, 10) +
   geom_vline(aes(xintercept = mean_), color = "red") +
+  labs(x = "Individual Sample Observations and Mean of Sample") +
+  labs(y = "Counts of Individual Sample Means") +
+  labs(title = "Simulated Sample of Size 100") +
 ggplot(size1000) +
   geom_histogram(mapping = aes(x = marbles1000), bins = 10,
   boundary = 0) +
   xlim(0, 10) +
-  geom_vline(aes(xintercept = mean_), color = "red")
+  geom_vline(aes(xintercept = mean_), color = "red") +
+  labs(x = "Individual Sample Observations and Mean of Sample") +
+  labs(y = "Counts of Individual Sample Means") +
+  labs(title = "Simulated Sample of Size 1000")
 ```
 
 As we did before, let's now automate this process and create a histogram of means across many different samples.
@@ -370,7 +385,7 @@ ggplot(data = data.frame(x = c(0.35, 0.65)), mapping =  aes(x = x)) +
   stat_function(fun = dnorm, args = list(0.5, 0.014)) +
   geom_vline(xintercept = 0.38, color = "red") +
   geom_vline(xintercept = 0.62, color = "red") +
-  xlab("Proportion of female gun owners") +
+  xlab("Proportion of Female Gun Owners") +
   ylab("Relative Number of Samples")
 
 ```
