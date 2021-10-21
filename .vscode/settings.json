@@ -4,9 +4,28 @@
         "rmd"
     ],
     "cSpell.words": [
+        "binwidth",
+        "cond",
+        "dataframe",
+        "dnorm",
+        "ggplot",
         "knitr",
+        "linetype",
+        "nocite",
+        "normline",
+        "pnorm",
+        "refref",
+        "samp",
+        "summarise",
+        "tibble",
         "tidymodels",
         "tidyverse",
-        "veaux"
+        "unimodal",
+        "veaux",
+        "vline",
+        "xintercept",
+        "xlab",
+        "xlim",
+        "ylab"
     ]
 }

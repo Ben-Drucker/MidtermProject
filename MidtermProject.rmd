@@ -77,7 +77,7 @@ size1000 <- tibble(marbles1000 = sample(marbles, 1000))
 
 # TODO: y-labels and title
 
-marble_plot = ggplot(size3) +
+marble_plot <- ggplot(size3) +
   geom_bar(mapping = aes(x = marbles3, fill = marbles3)) +
   scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) + #FIXME!!!
   xlim("blue", "red") +
@@ -104,17 +104,16 @@ v <- c()  # Initialize vector of sample proportion values
 
 for (i in 1:1000) { # for each of 1000 samples, take a sample of size 1000
   size_ <- tibble(marbles_ = sample(marbles, 1000))
-  filter(size_, marbles_ == "blue") %>% 
+  filter(size_, marbles_ == "blue") %>%
     summarise(num_blue = n()) %>%
       select(num_blue) -> output # get the number of just blue marbles
-  
-  v <- append(v, output[[1]]/1000) # append the sample proportion to v
+  v <- append(v, output[[1]] / 1000) # append the sample proportion to v
 }
 
 data_ <- tibble(count = v) # make a tibble out of v
 
 samp_dist <- ggplot(data_) + # make the plot
-  geom_histogram(mapping = aes(x = count), 
+  geom_histogram(mapping = aes(x = count),
   binwidth = 0.005, color = "#eaee0594", fill = "#38c400b2")
 ```
 
@@ -137,8 +136,8 @@ Now that we have the mean and standard deviation of the distribution, we can plo
 # (We multiply the normal curve by 5 because the area under of
 # the histogram is 0.005 binwidth * 1000 points = 5
 samp_dist_new <- samp_dist +
-  stat_function(fun = function(x) 5*dnorm(x, mean = mean(v), 
-  sd = sqrt(0.5*0.5/1000)), color = "#008321be", 
+  stat_function(fun = function(x) 5 * dnorm(x, mean = mean(v),
+  sd = sqrt(0.5 * 0.5 / 1000)), color = "#008321be",
   size = 2, alpha = 0.85, linetype = 5)
 
 samp_dist_new
@@ -226,11 +225,11 @@ data_ <- tibble(mean_ = v)
 # the histogram is 0.025 binwidth * 1000 points = 25
 
 ggplot(data_) +
-  geom_histogram(mapping = aes(x = mean_), binwidth = 0.025, 
+  geom_histogram(mapping = aes(x = mean_), binwidth = 0.025,
   color = "#eaee0594", fill = "#38c400b2") +
-  xlim(4.5, 5.5) + 
-  stat_function(fun = function(x) 25*dnorm(x, mean = mean(v), 
-  sd = sqrt(sd(marbles)**2/1000)), color = "#008321be", 
+  xlim(4.5, 5.5) +
+  stat_function(fun = function(x) 25 * dnorm(x, mean = mean(v),
+  sd = sqrt(sd(marbles)**2 / 1000)), color = "#008321be",
   size = 2, alpha = 0.85, linetype = 5)
 ```
 
