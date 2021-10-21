@@ -47,7 +47,7 @@ For these types of questions, it would be completely impractical to survey every
 
 Let's begin a simple example: marbles in a jar. Suppose I filled a jar filled with 10,000 blue marbles and 10,000 red marbles. Thus, there are twenty thousand marbles in total. However, suppose I don't tell you this, and I task you with estimating the proportion of red marbles in the jar. It would be impractical to count all the marbles, so you decide to count a sample of them and use that as the estimate. (This is analogous to the example about the proportion of gun owners who are female!)
 
-#### **Q1: The code below[^doc] simulates selections from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Run this code multiple times. Before running this code, what do you predict will happen when sample size increases? After running the code, did you find your hypothesis was true? *Answer here: [Ans: Q1]***
+#### **Q1: The code below[^doc] simulates samples from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Run this code multiple times. Before running this code, what do you predict will happen when sample size increases? After running the code, did you find your hypothesis was true? *Answer here: [Ans: Q1]***
 
 ```{r fig.show='hide'}
 marbles <- c() # Initialize vector for the marbles
@@ -104,25 +104,25 @@ marble_plot <- ggplot(size3) +
   xlim("blue", "red") +
   labs(x = "Color") +
   labs(y = "Count") +
-  labs(title = "Sample Size 3") +
+  labs(title = "Simulated Sample of Size 3") +
 ggplot(size10) +
   geom_bar(mapping = aes(x = marbles10), fill = colors10) +
   xlim("blue", "red") +
   labs(x = "Color") +
   labs(y = "Count") +
-  labs(title = "Sample Size 10") +
+  labs(title = "Simulated Sample of Size 10") +
 ggplot(size100) +
   geom_bar(mapping = aes(x = marbles100), fill = colors100) +
   xlim("blue", "red") +
   labs(x = "Color") +
   labs(y = "Count") +
-  labs(title = "Sample Size 100") +
+  labs(title = "Simulated Sample of Size 100") +
 ggplot(size1000) +
   geom_bar(mapping = aes(x = marbles1000), fill = colors1000) +
   xlim("blue", "red") +
   labs(x = "Color") +
   labs(y = "Count") +
-  labs(title = "Sample Size 1000")
+  labs(title = "Simulated Sample of Size 1000")
 ```
 
 What if we were to rerun this sampling procedure many times (with a fixed sample size), counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram? This would mean we wouldn't have to run the code above multiple times!
@@ -144,7 +144,8 @@ data_ <- tibble(count = v) # make a tibble out of v
 
 samp_dist <- ggplot(data_) + # make the plot
   geom_histogram(mapping = aes(x = count),
-  binwidth = 0.005, color = "#eaee0594", fill = "#38c400b2")
+  binwidth = 0.005, color = "#eaee0594", fill = "#38c400b2") +
+  xlim(0.4, 0.6)
 ```
 
 This type of histogram is called a **sampling distribution of a proportion**. This is because it is the *distribution* of *samples* from which we are trying to gain information about a population *proportion*.
@@ -172,7 +173,10 @@ Now that we have the mean and standard deviation of the distribution, we can plo
 samp_dist_new <- samp_dist +
   stat_function(fun = function(x) 5 * dnorm(x, mean = mean(v),
   sd = sqrt(0.5 * 0.5 / 1000)), color = "#008321be",
-  size = 2, alpha = 0.85, linetype = 5)
+  size = 2, alpha = 0.85, linetype = 5) +
+  labs(title = "Sampling Distribution for Proportions", 
+  x = "Proportion of Blue Marbles",
+  y = "Number of Samples")
 
 samp_dist_new
 ```
@@ -188,7 +192,7 @@ The reason we care about sampling distributions is that they allow us to conside
 <!--TODO If time, go into detail about the SD of the binomial model-->
 <!--QQ: Sample distribution vs. sampling distribution: Which (if either) can mean a distribution of actual data? Which is just "all possible"?-->
 
-**Q6: Read the introduction to the following article on [https://news.gallup.com/poll/264932/percentage-americans-own-guns.aspx](the study @pew about gun ownership mentioned earlier.) We want to examine the sampling distribution for this study. (Let your null hypothesis be "the proportion of gun owners who are female is 50%") First, draw out the sampling distribution indicating the center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion, $\hat{p}$. Qualitatively, what do you conclude?[^gun_ref]*Answer here: [Ans: Q6]***
+**Q6: Read the introduction to the following article on [gun ownership](https://news.gallup.com/poll/264932/percentage-americans-own-guns.aspx) (the study @pew about gun ownership mentioned earlier.) We want to examine the sampling distribution for this study. (Let your null hypothesis be "the proportion of gun owners who are female is 50%") First, draw out the sampling distribution indicating the center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion, $\hat{p}$. Qualitatively, what do you conclude?[^gun_ref]*Answer here: [Ans: Q6]***
 
 
 ### Sampling distributions for means
@@ -264,7 +268,9 @@ ggplot(data_) +
   xlim(4.5, 5.5) +
   stat_function(fun = function(x) 25 * dnorm(x, mean = mean(v),
   sd = sqrt(sd(marbles)**2 / 1000)), color = "#008321be",
-  size = 2, alpha = 0.85, linetype = 5)
+  size = 2, alpha = 0.85, linetype = 5) + 
+  labs(title = "Sampling Distribution of Means", 
+  x = "Mean of Sample", y = "Number of Samples")
 ```
 
 Yes! This distribution looks normal! What is its center and standard deviation? It should again feel natural the its center is $\mu$, the population mean. And just like before, standard deviation is also tricky. Here it is $\frac{\sigma}{\sqrt{n}}$, where $\sigma$ is the standard deviation of the *population*. In particular, just like the sampling distribution for proportions, note that the standard deviation is inversely proportion to the square root of sample size. This is why the means of samples of larger sizes vary less. (And the associated sampling distribution is narrower.)
@@ -305,7 +311,7 @@ For a sampling distribution of means, we swap in the following condition:
 
 ### Conclusions
 
-In this article, we began by motivating sampling distributions. Sampling distributions are critical in enabling us to answer questions about populations using only samples. (After all, we don't expect all samples to be the same — that's sample variability). They allow us to view a theoretical distribution of all possible samples we could take in a population, which allows us to check how our sample stacks up. A crucial component is the famed **Central Limit Theorem**, which says our sampling distributions can be reasonably modeled after a normal distribution (given that special conditions are satisfied.)
+In this lab activity, we began by motivating sampling distributions. Sampling distributions are critical in enabling us to answer questions about populations using only samples. (After all, we don't expect all samples to be the same — that's sample variability). They allow us to view a theoretical distribution of all possible samples we could take in a population, which allows us to check how our sample stacks up. A crucial component is the famed **Central Limit Theorem**, which says our sampling distributions can be reasonably modeled after a normal distribution (given that special conditions are satisfied.)
 
 ### Answers
 
@@ -356,7 +362,7 @@ From the article, 62% of gun owners are male
 (which, for simplicity means that 38% of gun owners are female.)
 Since our assumption was that there is no gender gap in gun ownership,
 our sampling distribution is centered at 0.5, and has a standard
-deviation of $\sqrt{\frac{0.5*0.5}{1269}} \approx 0.014$ since the sample size was 1296.
+deviation of $\sqrt{\frac{0.5*0.5}{1269}} \approx 0.014$ since the sample size was 1296. In the graph, the y axis represents relative number of samples which guarantees area equals 1 under the normal curve.
 Graph below:
 ```{r}
 
@@ -365,7 +371,7 @@ ggplot(data = data.frame(x = c(0.35, 0.65)), mapping =  aes(x = x)) +
   geom_vline(xintercept = 0.38, color = "red") +
   geom_vline(xintercept = 0.62, color = "red") +
   xlab("Proportion of female gun owners") +
-  ylab("")
+  ylab("Relative Number of Samples")
 
 ```
 
@@ -391,5 +397,3 @@ One example is the study about incomes in marriages with different gender
 configurations mentioned in the introduction.
 
 ### References[^refref]
-
-### Footnotes
