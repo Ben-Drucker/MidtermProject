@@ -7,7 +7,7 @@ output:
   html_document:
     toc: yes
     toc_float: yes
-    code_folding: hide
+    code_folding: show
     css: stat21-lab-theme.css
   pdf_document:
     toc: yes
@@ -28,7 +28,7 @@ theme_set(theme_minimal(base_family = "Times"))
 
 ### Before Starting
 
-Make sure to run the following code chunk to load in the correct libraries! For each question, the answer with relevant output is included in the "Answers" section.
+Make sure to run the following code chunk to load in the correct libraries! For each question, the answer with relevant output is included in the "Answers" section. By default, each code chunk is shown. If you would like to hide a code chunk, click the "hide" button to the upper right of the chunk.
 ```{r}
 library(tidyverse)
 library(tidymodels)
@@ -75,6 +75,7 @@ size1000 <- tibble(marbles1000 = sample(marbles, 1000))
 #   scale_fill_manual(...)        [specify custom fill values for the bars]
 #   xlim(...)                     [specify the x labels we want]
 
+# color values: make sure to assign the correct column the correct color!
 
 color_values <- c("#0000ff6c", "#ff00006c")
 no_blue_vals <- c("#ff00006c")
@@ -122,8 +123,6 @@ ggplot(size1000) +
   labs(x = "Color") +
   labs(y = "Count") +
   labs(title = "Sample Size 1000")
-
-marble_plot
 ```
 
 What if we were to rerun this sampling procedure many times (with a fixed sample size), counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram? This would mean we wouldn't have to run the code above multiple times!
@@ -156,11 +155,13 @@ Now that we know the sampling distribution follows a normal model[^cond], it is 
 
 #### **Q3:** What do you think the center of the sampling distribution is? (As a challenge, you can also think about its standard deviation, but it is difficult to guess just by looking at a sampling distribution.) *Answer here: [Ans: Q3]*
 
-As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model[^repl_tech], which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (blue marbles). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
+As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model[^repl_tech], which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (one category in our population). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
 
 $$\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{\frac{np(1-p)}{n^2}} = \sqrt{\frac{p(1-p)}{n}}.$$
 
 (In this derivation, there are some more complicated facts about random variables we are taking advantage of.)
+
+Similarly, the center of the binomial distribution is the true number of successes. Thus, the center of the sampling distribution is the true number of successes divided by $n$, or $p$.
 
 Now that we have the mean and standard deviation of the distribution, we can plot a normal curve over our simulated sampling distribution:
 
@@ -176,7 +177,7 @@ samp_dist_new <- samp_dist +
 samp_dist_new
 ```
 
-Similarly, the center of the binomial distribution is the true number of successes.<!--FIXME--> Thus, the center of the sampling distribution is the true number of successes divided by $n$, or $p$. 
+ 
 
 #### **Q4:** Calculate the mean and standard deviation for a sampling distribution of proportions with $p = 0.70$ and $n = 421$. *Answer here: [Ans: Q4]*
 
@@ -198,7 +199,7 @@ To see that the underlying principles of sampling distributions hold, consider t
 
 <!--FIXME: Replacement question -->
 
-#### **Q7: The following code shows histograms of marble diameters found in random samples of differing sizes. It also shows the mean of the sample. Try running the code multiple times. Verify that the mean is more stable for samples of larger sizes. *Answer here: [Ans: Q7]***
+#### **Q7: The following code shows histograms of marble diameters found in random samples of differing sizes. It also shows the mean of the sample. Try running the code multiple times. Verify that the mean is less variable for samples of larger sizes. *Answer here: [Ans: Q7]***
 
 ```{r fig.show='hide'}
 marbles <- c()
@@ -266,7 +267,9 @@ ggplot(data_) +
   size = 2, alpha = 0.85, linetype = 5)
 ```
 
-Yes! This distribution looks normal! What is its center and standard deviation? It should again feel natural the its center is $\mu$, the population mean. And just like before, standard deviation is also tricky. Here it is $\frac{\sigma}{\sqrt{n}}$, where $\sigma$ is the standard deviation of the *population*.
+Yes! This distribution looks normal! What is its center and standard deviation? It should again feel natural the its center is $\mu$, the population mean. And just like before, standard deviation is also tricky. Here it is $\frac{\sigma}{\sqrt{n}}$, where $\sigma$ is the standard deviation of the *population*. In particular, just like the sampling distribution for proportions, note that the standard deviation is inversely proportion to the square root of sample size. This is why the means of samples of larger sizes vary less. (And the associated sampling distribution is narrower.)
+
+
 <!--TODO: If time, explain reason for this standard deviation.-->
 
 **Q8: Sometimes our sampling distribution is centered at zero. Why might this be? (Hint: What might we be trying to test with such a distribution) *Answer here: [Ans: Q8]***
@@ -316,7 +319,7 @@ marble_plot
 If this code was run multiple times, we would see that the histograms corresponding to larger samples vary less.
 
 #### Ans: Q2
-You should have observed that the distribution gets narrower and narrower as the sample size increases. This should intuitively make sense. As we increase sample size, it seems more likely that each sample is closer to the true proportion of blue marbles in the jar. Here is a simulated sampling distribution:
+You should have observed that the distribution gets narrower and narrower as the sample size increases. This should intuitively make sense. As we increase sample size, it seems more likely that each sample is closer to the true proportion of blue marbles in the jar. Here is just one simulated sampling distribution:
 ```{r echo = FALSE}
 samp_dist
 ```
@@ -376,7 +379,7 @@ One resultant plot:
 marble_plot_mean
 ```
 
-If this code was run multiple times, we would see that the histograms corresponding to larger samples vary less.
+If this code was run multiple times, we would see that means of the histograms corresponding to larger samples vary less.
 
 #### Ans: Q8
 
