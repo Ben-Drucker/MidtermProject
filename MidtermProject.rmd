@@ -76,25 +76,25 @@ size1000 <- tibble(marbles1000 = sample(marbles, 1000))
 #   xlim(...)                     [specify the x labels we want]
 
 
-color_values = c("#0000ff6c", "#ff00006c")
-no_blue_vals = c("#ff00006c")
+color_values <- c("#0000ff6c", "#ff00006c")
+no_blue_vals <- c("#ff00006c")
 
-colors3 = color_values
-colors10 = color_values
-colors100 = color_values
-colors1000 = color_values
+colors3 <- color_values
+colors10 <- color_values
+colors100 <- color_values
+colors1000 <- color_values
 
-if(length(pull(unique(size3['marbles3']), 'marbles3')) == 1){
-  colors3 = no_blue_vals
+if (length(pull(unique(size3["marbles3"]), "marbles3")) == 1) {
+  colors3 <- no_blue_vals
 }
-if(length(pull(unique(size10['marbles10']), 'marbles10')) == 1){
-  colors10 = no_blue_vals
+if (length(pull(unique(size10["marbles10"]), "marbles10")) == 1) {
+  colors10 <- no_blue_vals
 }
-if(length(pull(unique(size100['marbles100']), 'marbles100')) == 1){
-  colors100 = no_blue_vals
+if (length(pull(unique(size100["marbles100"]), "marbles100")) == 1) {
+  colors100 <- no_blue_vals
 }
-if(length(pull(unique(size1000['marbles1000']), 'marbles1000')) == 1){
-  colors1000 = no_blue_vals
+if (length(pull(unique(size1000["marbles1000"]), "marbles1000")) == 1) {
+  colors1000 <- no_blue_vals
 }
 
 
@@ -109,7 +109,7 @@ ggplot(size10) +
   xlim("blue", "red") +
   labs(x = "Color") +
   labs(y = "Count") +
-  labs(title = "Sample Size 10") + 
+  labs(title = "Sample Size 10") +
 ggplot(size100) +
   geom_bar(mapping = aes(x = marbles100), fill = colors100) +
   xlim("blue", "red") +
@@ -150,7 +150,7 @@ samp_dist <- ggplot(data_) + # make the plot
 
 This type of histogram is called a **sampling distribution of a proportion**. This is because it is the *distribution* of *samples* from which we are trying to gain information about a population *proportion*.
 
-The following fact about sampling distributions is possibly less obvious: as sample size increases—the *normal model* becomes a better and better model for the sampling distribution. This is due to the **Central Limit Theorem**, a pivotal result in statistics. The fact specifically applying to sampling distributions is just one part of the more general result proven by Pierre-Simon Laplace in 1810.
+The following fact about sampling distributions is possibly less obvious: as sample size increases—the *normal model* becomes a better and better model for the sampling distribution. This is due to the **Central Limit Theorem**, a pivotal result in statistics. (The fact specifically applying to sampling distributions is just one part of the more general result proven by Pierre-Simon Laplace in 1810.)
 
 Now that we know the sampling distribution follows a normal model[^cond], it is natural to ask about its center and spread. 
 
@@ -159,6 +159,8 @@ Now that we know the sampling distribution follows a normal model[^cond], it is 
 As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model[^repl_tech], which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (blue marbles). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
 
 $$\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{\frac{np(1-p)}{n^2}} = \sqrt{\frac{p(1-p)}{n}}.$$
+
+(In this derivation, there are some more complicated facts about random variables we are taking advantage of.)
 
 Now that we have the mean and standard deviation of the distribution, we can plot a normal curve over our simulated sampling distribution:
 

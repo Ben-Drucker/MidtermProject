@@ -21,6 +21,7 @@
         "tidymodels",
         "tidyverse",
         "unimodal",
+        "vals",
         "veaux",
         "vline",
         "xintercept",
