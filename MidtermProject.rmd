@@ -39,15 +39,15 @@ library(ggplot2)
 
 ### Introduction and Motivation
 
-Often, we desire statistical information about a population. These sorts of studies tend to focus on proportions or means of some aspect of the population. For example, in politics, we might wonder if the proportion of female gun-owners is 50% (i.e., is there an even gender split in American gun ownership[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in opposite-sex marriages vs. in same-sex marriages.
+Often, we are interested in statistical information for group(s) within a population. Usually, we focus on proportions or means of some aspect of the population. For example, in politics, we might wonder if the proportion of female gun-owners is 50% (i.e., is there an even gender split in American gun ownership[^gender-simplicity]?) Or, we might ask if there is a difference in the mean household income between men in opposite-sex marriages vs. in same-sex marriages.
 
-For these types of questions, it would be completely impractical to survey every household. However, it *is* practical (and common) to survey a limited subset (**sample**) of the population in question. Obviously, it is unlikely for the answer to our question to be found *exactly*, using a sample. After all, we are not surveying the whole population! But what does it take to get an answer that is "close enough?" How many people do we need to survey? What assumptions about our data need to be met? Read on to find out!
+For these types of questions, it would be completely impractical to survey every household. However, it *is* practical (and common) to survey a limited subset (**sample**) of the population in question. Obviously, it is unlikely that our sample provides the *exact* true answer. After all, we are not surveying the whole population! But what does it take to get an answer that is "close enough?" How many people do we need to survey? What assumptions about our data need to be met? Read on to find out!
 
 ### Sampling distributions for Proportions
 
-Let's begin a simple example: marbles in a jar. Suppose I filled a jar filled with 10,000 blue marbles and 10,000 red marbles. Thus, there are twenty thousand marbles in total. However, suppose I don't tell you this, and I task you with estimating the proportion of red marbles in the jar. It would be impractical to count all the marbles, so you decide to count a sample of them and use that as the estimate. (This is analogous to the example about the proportion of gun owners who are female!)
+Let's begin a simple example: marbles in a jar. Suppose I filled a jar filled with 10,000 blue marbles and 10,000 red marbles. Thus, there are twenty thousand marbles in total. However, suppose I don't tell you this, and I task you with estimating the proportion of blue marbles in the jar. It would be impractical to count all the marbles, so you decide to count a sample of them and use that as your estimate. (This is analogous to the example about the proportion of gun owners who are female!)
 
-#### **Q1: The code below[^doc] simulates samples from the jar with samples of size 3, 10, 100, and 1,000, and displays the results in histograms. Run this code multiple times. Before running this code, what do you predict will happen when sample size increases? After running the code, did you find your hypothesis was true? *Answer here: [Ans: Q1]***
+#### **Q1: The code below[^doc] simulates samples from the jar of size 3, 10, 100, and 1,000, and displays the results in histograms. Run this code multiple times. Before running this code, what do you predict will happen when sample size increases? After running the code, did you find your hypothesis was true? *Answer here: [Ans: Q1]***
 
 ```{r fig.show='hide'}
 marbles <- c() # Initialize vector for the marbles
@@ -127,7 +127,7 @@ ggplot(size1000) +
 
 What if we were to rerun this sampling procedure many times (with a fixed sample size), counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram? This would mean we wouldn't have to run the code above multiple times!
 
-#### **Q2:** The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram of proportions of blue marbles sampled will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe? *Answer here: [Ans: Q2]*
+#### **Q2:** The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram of proportions of blue marbles in samples will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe? *Answer here: [Ans: Q2]*
 
 ```{r fig.show='hide'}
 v <- c()  # Initialize vector of sample proportion values
@@ -151,21 +151,21 @@ samp_dist <- ggplot(data_) + # make the plot
   labs(title = "Sampling Distribution of 1000 Samples of Size 1000")
 ```
 
-This type of histogram is called a **sampling distribution of a proportion**. This is because it is the *distribution* of *samples* from which we are trying to gain information about a population *proportion*.
+This type of histogram is called a **sampling distribution of a proportion**. This is because it is the *distribution* of *sample proportions* from which we are trying to gain information about a population.
 
-The following fact about sampling distributions is possibly less obvious: as sample size increases—the *normal model* becomes a better and better model for the sampling distribution. This is due to the **Central Limit Theorem**, a pivotal result in statistics. (The fact specifically applying to sampling distributions is just one part of the more general result proven by Pierre-Simon Laplace in 1810.)
+The following fact about sampling distributions is possibly less obvious: as sample size increases—the *normal model* becomes a better and better model for the sampling distribution! This is due to the **Central Limit Theorem**, a pivotal result in statistics. (The fact specifically applying to sampling distributions is just one part of the more general result proven by Pierre-Simon Laplace in 1810.)
 
 Now that we know the sampling distribution follows a normal model[^cond], it is natural to ask about its center and spread. 
 
 #### **Q3:** What do you think the center of the sampling distribution is? (As a challenge, you can also think about its standard deviation, but it is difficult to guess just by looking at a sampling distribution.) *Answer here: [Ans: Q3]*
 
-As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model[^repl_tech], which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (one category in our population). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
+As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. (Here, the "underlying data" is the set of all samples.) The data follows a binomial model[^repl_tech], which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (one category in our population). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
 
 $$\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{\frac{np(1-p)}{n^2}} = \sqrt{\frac{p(1-p)}{n}}.$$
 
-(In this derivation, there are some more complicated facts about random variables we are taking advantage of.)
+(In this derivation, we are taking advantage of some more complicated facts about random variables.)
 
-Similarly, the center of the binomial distribution is the true number of successes. Thus, the center of the sampling distribution is the true number of successes divided by $n$, or $p$.
+The center of the binomial distribution is the true number of successes. Thus, the center of the sampling distribution is the true number of successes divided by $n$, which equals $p$.
 
 Now that we have the mean and standard deviation of the distribution, we can plot a normal curve over the simulated sampling distribution (from Q2):
 
@@ -177,7 +177,8 @@ samp_dist_new <- samp_dist +
   stat_function(fun = function(x) 5 * dnorm(x, mean = mean(v),
   sd = sqrt(0.5 * 0.5 / 1000)), color = "#008321be",
   size = 2, alpha = 0.85, linetype = 5) +
-  labs(title = "Sampling Distribution of 1000 Samples of Size 1000 Including Normal Curve", 
+  labs(title = "Sampling Distribution of 1000 Samples of Size 1000
+  Including Normal Curve",
   x = "Proportion of Blue Marbles",
   y = "Number of Samples")
 
@@ -190,15 +191,14 @@ samp_dist_new
 
 #### **Q5:** Suppose we think the proportion of blue marbles is 0.5. Would you be surprised if you took a sample of 1000 marbles and 51% were blue? What if 40% were blue? How might you quantify this answer? *Answer here: [Ans: Q5]*
 
-The reason we care about sampling distributions is that they allow us to consider the distribution of sample proportions across many different (theoretical) samples. Then, we can compare this distribution to our actual sample and check how unlikely the proportion of our sample is *Given that our hypothesis---our null hypothesis---about the distribution's center is true*. This is called **hypothesis testing**. 
+The reason we care about sampling distributions is that they allow us to consider the distribution of sample proportions across many different (theoretical) samples. Then, we can compare this distribution to our actual sample and check how unlikely the proportion of our sample is *Given that our hypothesis---our null hypothesis---about the distribution's center is true*. This is called **hypothesis testing**. (This full topic is beyond the scope of this article, but it is important to get context about why sampling distributions are important.)
 
 <!--TODO If time, go into detail about the SD of the binomial model-->
-<!--QQ: Sample distribution vs. sampling distribution: Which (if either) can mean a distribution of actual data? Which is just "all possible"?-->
 
-**Q6: Read the introduction to the following article on [gun ownership](https://news.gallup.com/poll/264932/percentage-americans-own-guns.aspx) (the study @pew about gun ownership mentioned earlier.) We want to examine the sampling distribution for this study. (Let your null hypothesis be "the proportion of gun owners who are female is 50%") First, draw out the sampling distribution indicating the center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion, $\hat{p}$. Qualitatively, what do you conclude?[^gun_ref]*Answer here: [Ans: Q6]***
+**Q6: Read the introduction to the following article on [gun ownership](https://news.gallup.com/poll/264932/percentage-americans-own-guns.aspx) (the study @pew about gun ownership mentioned earlier.) We want to examine the sampling distribution for this study. (Let your null hypothesis be "the proportion of gun owners who are female is 50%") First, draw out the sampling distribution indicating its center and standard deviation. Draw two vertical lines on the histogram corresponding to the sample proportion, $\hat{p}$. Qualitatively, what do you conclude?[^gun_ref]*Answer here: [Ans: Q6]***
 
 
-### Sampling distributions for means
+### Sampling distributions for Means
 
 This section will explore sampling distributions for *means*. In the last section, we looked at sampling distributions for proportions. 
 
@@ -331,7 +331,7 @@ In this lab activity, we began by motivating sampling distributions. Sampling di
 ### Answers
 
 #### Ans: Q1
-You should have found that as the sample size increases, the bar graphs are generally less variable (across different runs of the code) and closer to the true proportion of blue/red marbles in the jar. Here is an example of one such run:
+You should have found that as the sample size increases, the bar graphs are generally less variable (across different runs of the code) and closer to the true proportion of blue/red marbles in the jar (50%). Here is an example of one such run:
 
 ```{r echo=FALSE}
 marble_plot
@@ -340,41 +340,41 @@ marble_plot
 If this code was run multiple times, we would see that the histograms corresponding to larger samples vary less.
 
 #### Ans: Q2
-You should have observed that the distribution gets narrower and narrower as the sample size increases. This should intuitively make sense. As we increase sample size, it seems more likely that each sample is closer to the true proportion of blue marbles in the jar. Here is just one simulated sampling distribution:
+You should have observed that the distribution gets narrower and narrower as the sample size increases. This should intuitively make sense. As we increase sample size, it seems more likely that each sample is closer to the true proportion of blue marbles in the jar. (We also saw this in Q1!) Here is just one simulated sampling distribution:
 ```{r echo = FALSE}
 samp_dist
 ```
 
 #### Ans: Q3
 
-As you can probably imagine, sampling distributions for proportions are centered at $p$, the true population proportion. This should intuitively make sense; with many random samples, we would expect the samples to average to the underlying population proportion.
+As you can probably imagine, sampling distributions for proportions are centered at $p$, the true population proportion. This should intuitively make sense; with many random samples, we would expect about half the proportions to be less than the true population proportion and half to be more.
 
 #### Ans: Q4
 The answer is as follows:
 
 $$\text{mean} = 0.70$$
-$$\text{SD} = \sqrt{\frac{0.7\cdot0.3}{421}} \approx 0.223$$
+$$\text{SD} = \sqrt{\frac{0.7\cdot0.3}{421}} \approx 0.0223$$
 
 #### Ans: Q5
 
 Let's think about the underlying sampling distribution.
 It is centered at the true proportion of blue marbles.
 Since we suppose that $p = 0.5$, the standard deviation of
-the sampling distribution is $\sqrt{\frac{0.5*0.5}{1000}} \approx 0.0158$.
+the sampling distribution is $\sqrt{\frac{0.5\cdot0.5}{1000}} \approx 0.0158$.
 Thus, if we picked 51% blue marbles in our sample, the 1%
-increase over p represents $\frac{0.01}{0.0158} \approx 0.632$ SDs above $p$.
+increase over $p$ represents $\frac{0.01}{0.0158} \approx 0.632$ SDs above $p$.
 How surprising is this? The probability of getting a difference of
 0.632 SDs above or below the mean of the distribution ($p$) is the
 area under the bell curve to the left and right of 0.632 SDs above
 and below the mean. Using R code, this probability is 
 \verb|2*pnorm(-0.632)|, or about 52.7%. So getting 51% is not 
 that surprising. On the other hand, if we do a similar analysis with 
-the 40% case, the probability drops all the way to 0.00000000764% !
+the 40% case, the probability drops all the way to 0.00000000764%!
 So this would be extremely surprising. 
 
 #### Ans: Q6
 From the article, 62% of gun owners are male 
-(which, for simplicity means that 38% of gun owners are female.)
+(which, for simplicity means that 38% of gun owners are female[^gender-simplicity].)
 Since our assumption was that there is no gender gap in gun ownership,
 our sampling distribution is centered at 0.5, and has a standard
 deviation of $\sqrt{\frac{0.5*0.5}{1269}} \approx 0.014$ since the sample size was 1296. In the graph, the y axis represents relative number of samples which guarantees area equals 1 under the normal curve.
