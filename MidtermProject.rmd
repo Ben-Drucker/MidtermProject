@@ -200,18 +200,18 @@ The reason we care about sampling distributions is that they allow us to conside
 
 ### Sampling distributions for Means
 
-This section will explore sampling distributions for *means*. In the last section, we looked at sampling distributions for proportions. 
+It's great that we can create sampling distributions for proportions, but what do we do for numerical data? Not to worry! We can apply similar principles from the previous sections to means.
 
-To see that the underlying principles of sampling distributions hold, consider the following example. Suppose we again have 10000<!--TODO: fix 1M/10000--> marbles in a jar, but this time, the marbles' diameters are integers from 1 to 9 (inclusive). Suppose that the population mean of the marble diameters is 5cm. Again, supposing we don't know this, we want to estimate the mean marble diameter using a sample. 
+To see that the underlying principles of sampling distributions hold, consider the following example. Suppose we have 18000 marbles in a jar, but this time, the marbles' diameters are integers from 1 to 9 (inclusive), and there are 2000 marbles with each diameter. Thus, the population mean of the marble diameters is 5cm. Again, supposing we don't know this, we want to estimate the mean marble diameter using a sample. 
 
 <!--FIXME: Replacement question -->
 
-#### **Q7: The following code shows histograms of marble diameters found in random samples of differing sizes. It also shows the mean of the sample. Try running the code multiple times. Verify that the mean is less variable for samples of larger sizes. *Answer here: [Ans: Q7]***
+#### **Q7: The following code shows histograms of marble diameters found in individual random samples of differing sizes. It also shows the mean of the sample in the form of vertical red lines. Try running the code multiple times. Verify that the mean is less variable for samples of larger sizes. *Answer here: [Ans: Q7]***
 
 ```{r fig.show='hide'}
 marbles <- c()
 for (diam in 1:9) {
-    for (i in 1:1000) {
+    for (i in 1:2000) {
     marbles <- append(marbles, diam)
   }
 }
@@ -288,7 +288,7 @@ ggplot(data_) +
   x = "Mean of Sample", y = "Number of Samples")
 ```
 
-Yes! This distribution looks normal! What is its center and standard deviation? It should again feel natural the its center is $\mu$, the population mean. And just like before, standard deviation is also tricky. Here it is $\frac{\sigma}{\sqrt{n}}$, where $\sigma$ is the standard deviation of the *population*. In particular, just like the sampling distribution for proportions, note that the standard deviation is inversely proportion to the square root of sample size. This is why the means of samples of larger sizes vary less. (And the associated sampling distribution is narrower.)
+Yay! This distribution looks normal! (One amazing fact, again due to the Central Limit Theorem, is that *even if the population is not normally distributed*, as sample size increases, *the sampling distribution of means will be!*) What is its center and standard deviation? It should again feel natural the its center is $\mu$, the population mean. Just like before, standard deviation is also tricky. Here it is $\frac{\sigma}{\sqrt{n}}$, where $\sigma$ is the standard deviation of the *population*. In particular, just like the sampling distribution for proportions, note that the standard deviation is inversely proportion to the square root of sample size. This is why the means of samples of larger sizes vary less. (And the associated sampling distribution is narrower.)
 
 
 <!--TODO: If time, explain reason for this standard deviation.-->
@@ -308,19 +308,19 @@ As was mentioned earlier, there are a few assumptions we have to verify to use a
 
 Whether we are looking at a sampling distribution for a proportion or for a mean, me must always verify the following assumptions:
 
-1. **Independence:** Each of the observations within a sample must be taken independently. This is often difficult (if not impossible) to check 
+1. **Independence:** Each of the observations within a sample must be taken independently. This is often difficult (if not impossible) to check.
 2. **Sample Size:** By the Central Limit Theorem, we must have a large enough sample size so that the normal model is a reasonable approximation.
 
 The following conditions help us check these assumptions.
 
 3. **Randomization:** If conducing an observational study, each observation in the sample should be chosen through random selection. If conducting an experiment, random assignment should be employed.  
-4. **10% condition:** The sample size should be less than 10% of the population size
+4. **10% condition:** The sample size should be less than 10% of the population size. 
 
 For a sampling distribution of proportions, we look at the following condition:
 
 5. **Success/failure condition:** There should be at least 10 "successes" and 10 "failures," where "successes" and "failures" are just names for the two groups we're studying.
 
-For a sampling distribution of means, we swap in the following condition:
+For a sampling distribution of means, we swap the following condition for the previous one:
 
 5. **Size:** If the population is symmetric and unimodal, a smaller sample size works. However, if this is not the case, samples may need to be larger.
 
@@ -403,7 +403,6 @@ marble_plot_mean
 If this code was run multiple times, we would see that means of the histograms corresponding to larger samples vary less.
 
 #### Ans: Q8
-
 
 Our sampling distribution would be centered at zero if we
 are hypothesis testing a difference between two means or two proportions,
