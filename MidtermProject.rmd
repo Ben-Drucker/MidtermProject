@@ -23,7 +23,7 @@ library(patchwork)
 library(dials)
 library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-theme_set(theme_minimal(base_family = "Georgia"))
+theme_set(theme_minimal(base_family = "Times"))
 ```
 
 ### Before Starting
@@ -39,7 +39,7 @@ library(ggplot2)
 
 ### Introduction and Motivation
 
-Many times, we are interested in inferring information about a population using only information from a sample. These sorts of studies tend to focus on proportions or means of some quality of the population. For example, we might wonder if the proportion of female gun-owners is 50% (i.e., is there an even gender split in American gun ownership[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in heterosexual marriages vs. in homosexual marriages.
+Often, we desire statistical information about a population. These sorts of studies tend to focus on proportions or means of some aspect of the population. For example, in politics, we might wonder if the proportion of female gun-owners is 50% (i.e., is there an even gender split in American gun ownership[^gender-simplicity])? Or, we might ask if there is a difference in the mean household income between men in opposite-sex marriages vs. in same-sex marriages.
 
 For these types of questions, it would be completely impractical to survey every household. However, it *is* practical (and common) to survey a limited subset (**sample**) of the population in question. Obviously, it is unlikely for the answer to our question to be found *exactly*, using a sample. After all, we are not surveying the whole population! But what does it take to get an answer that is "close enough?" How many people do we need to survey? What assumptions about our data need to be met? Read on to find out!
 
@@ -75,27 +75,58 @@ size1000 <- tibble(marbles1000 = sample(marbles, 1000))
 #   scale_fill_manual(...)        [specify custom fill values for the bars]
 #   xlim(...)                     [specify the x labels we want]
 
-# TODO: y-labels and title
+
+color_values = c("#0000ff6c", "#ff00006c")
+no_blue_vals = c("#ff00006c")
+
+colors3 = color_values
+colors10 = color_values
+colors100 = color_values
+colors1000 = color_values
+
+if(length(pull(unique(size3['marbles3']), 'marbles3')) == 1){
+  colors3 = no_blue_vals
+}
+if(length(pull(unique(size10['marbles10']), 'marbles10')) == 1){
+  colors10 = no_blue_vals
+}
+if(length(pull(unique(size100['marbles100']), 'marbles100')) == 1){
+  colors100 = no_blue_vals
+}
+if(length(pull(unique(size1000['marbles1000']), 'marbles1000')) == 1){
+  colors1000 = no_blue_vals
+}
+
 
 marble_plot <- ggplot(size3) +
-  geom_bar(mapping = aes(x = marbles3, fill = marbles3)) +
-  scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) + #FIXME!!!
+  geom_bar(mapping = aes(x = marbles3), fill = colors3) +
   xlim("blue", "red") +
+  labs(x = "Color") +
+  labs(y = "Count") +
+  labs(title = "Sample Size 3") +
 ggplot(size10) +
-  geom_bar(mapping = aes(x = marbles10, fill = marbles10)) +
-  scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) +
+  geom_bar(mapping = aes(x = marbles10), fill = colors10) +
   xlim("blue", "red") +
+  labs(x = "Color") +
+  labs(y = "Count") +
+  labs(title = "Sample Size 10") + 
 ggplot(size100) +
-  geom_bar(mapping = aes(x = marbles100, fill = marbles100)) +
-  scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) +
+  geom_bar(mapping = aes(x = marbles100), fill = colors100) +
   xlim("blue", "red") +
+  labs(x = "Color") +
+  labs(y = "Count") +
+  labs(title = "Sample Size 100") +
 ggplot(size1000) +
-  geom_bar(mapping = aes(x = marbles1000, fill = marbles1000)) +
-  scale_fill_manual(values = c("#0000ff6c", "#ff00006c")) +
-  xlim("blue", "red")
+  geom_bar(mapping = aes(x = marbles1000), fill = colors1000) +
+  xlim("blue", "red") +
+  labs(x = "Color") +
+  labs(y = "Count") +
+  labs(title = "Sample Size 1000")
+
+marble_plot
 ```
 
-What if we were to rerun this sampling procedure many times (with a fixed sample size), counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram? This would mean we wouldn't have to run the code above multiple times.
+What if we were to rerun this sampling procedure many times (with a fixed sample size), counted the proportion of blue marbles each time, and plotted the resulting proportions on a histogram? This would mean we wouldn't have to run the code above multiple times!
 
 #### **Q2:** The following code chooses 1,000 samples from the marble jar, each of size 1000. What might you imagine this histogram of proportions of blue marbles sampled will look like? What will its center be? What shape will it be? Try running this code multiple times, with different sample sizes. What do you observe? *Answer here: [Ans: Q2]*
 
@@ -125,7 +156,7 @@ Now that we know the sampling distribution follows a normal model[^cond], it is 
 
 #### **Q3:** What do you think the center of the sampling distribution is? (As a challenge, you can also think about its standard deviation, but it is difficult to guess just by looking at a sampling distribution.) *Answer here: [Ans: Q3]*
 
-As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model, which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (blue marbles). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
+As mentioned earlier, standard deviation is trickier. To determine this quantity, we briefly step away from the normal model and turn to the underlying data. This follows a binomial model[^repl_tech], which has standard deviation $\sqrt{np(1-p)}.$ This quantity is the standard deviation of the *number* of "successes" (blue marbles). However, we are interested in the standard deviation in the *proportion* of successes. Thus, we divide $\sqrt{np(1-p)}.$ by $n$ as follows:
 
 $$\frac{\sqrt{np(1-p)}}{n} = \frac{\sqrt{np(1-p)}}{\sqrt{n^2}} = \sqrt{\frac{np(1-p)}{n^2}} = \sqrt{\frac{p(1-p)}{n}}.$$
 
@@ -243,7 +274,7 @@ Yes! This distribution looks normal! What is its center and standard deviation? 
 [^doc]: `for` loop tutorials from @r_for and @r_for_2; `sample` documentation from @r_sample, @r_sample_3, @r_sample_4, and @r_sample_2; `colon` operator documentation from @r_colon; `append` documentation from @r_append; 
 [^refref]: Bibliography-making resources from @r_bib.
 [^gun_ref]: A tutorial for making the plot in the solution came from @r_normline
-
+[^repl_tech]: Technically, since we are not replacing marbles, the data is not *exactly* binomial, but when we look at conditions for the normal model later, we see that this assumption is reasonable, as long as the sample size is small compared to the population. 
 
 ### Assumptions for using the normal model
 
