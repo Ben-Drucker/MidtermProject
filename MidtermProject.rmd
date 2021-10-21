@@ -328,6 +328,8 @@ For a sampling distribution of means, we swap the following condition for the pr
 
 In this lab activity, we began by motivating sampling distributions. Sampling distributions are critical in enabling us to answer questions about populations using only samples. (After all, we don't expect all samples to be the same — that's sample variability). They allow us to view a theoretical distribution of all possible samples we could take in a population, which allows us to check how our sample stacks up. A crucial component is the famed **Central Limit Theorem**, which says our sampling distributions can be reasonably modeled after a normal distribution (given that special conditions are satisfied.)
 
+I hope you enjoyed this article!
+
 ### Answers
 
 #### Ans: Q1
